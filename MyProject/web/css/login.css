@@ -1,0 +1,140 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Oct 6, 2023, 4:51:43 PM
+    Author     : Phạm Văn Nghĩa
+*/
+body {
+    margin: 0;
+    padding: 0;
+}
+
+html{
+    font-family: Arial, Helvetica, sans-serif;
+    scroll-behavior: smooth;
+    /* Trang di chuyển theo kiểu cuộn */
+}
+
+/* CSS for adding shadow to h1 */
+.main-heading {
+    text-align: center;
+    font-size: 36px; /* Adjust the font size as needed */
+    font-weight: bold;
+    color: #FB5E00;
+    margin-top: 20px; /* Adjust the top margin as needed */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Box shadow with a slight blur and opacity */
+}
+
+
+.btn-login {
+    color: #fff;
+    background-color: #C23321;
+    border-color: #C23321;
+}
+
+.btn-login:hover {
+    color: #fff;
+    background-color: #7e190e;
+    border-color: #7e190e;
+    cursor: pointer;
+}
+
+.content{
+    display: flex;
+    justify-content: space-between;
+    padding: 3px 10px;
+    margin: 10px;
+}
+
+
+.login-table {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 60%; /* Đưa div login-table vào giữa màn hình theo chiều dọc */
+    right: 25%; /* Đưa div login-table vào giữa màn hình theo chiều ngang */
+    transform: translate(-50%, -50%); /* Canh giữa div login-table */
+    background-color: rgba(255, 255, 255, 0.9); /* Màu nền với độ trong suốt */
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 10px; /* Bo viền */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Đổ bóng */
+    max-width: 400px; /* Độ rộng tối đa */
+    width: 90%; /* Chiều rộng tỷ lệ tương đối */
+    margin: 0 auto; /* Canh giữa theo chiều ngang */    
+
+}
+
+.login-table .table{
+    display: block;
+    margin-bottom: 0;
+}
+
+.login-table h3 {
+    text-align: center;
+    color: #FB5E00;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.login-table:hover h3 {
+    transform: scale(1.1); /* Increase the size */
+    opacity: 0.8; /* Reduce opacity */
+}
+
+
+.login-table h3,
+.login-table .form-group {
+    padding-bottom: 15px;
+    width: 100%;
+    margin: 0;
+}
+
+.login-table .form-group label {
+    color: #FB5E00; /* Màu của label */
+}
+
+.login-table .form-control {
+    background-color: rgba(255, 255, 255, 0.9); /* Màu nền với độ trong suốt */
+    border: 1px solid #ccc; /* Viền input */
+    border-radius: 5px; /* Bo viền input */
+    color: #333; /* Màu văn bản trong input */
+    padding: 8px; /* Khoảng cách giữa nội dung và viền input */
+    margin-bottom: 10px; /* Khoảng cách giữa các input */
+}
+
+.login-table .form-control:focus {
+    border-color: #FB5E00; /* Màu viền input khi focus */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Đổ bóng khi focus */
+}
+
+.login-table select.form-control {
+    background-color: rgba(255, 255, 255, 0.9); /* Màu nền với độ trong suốt */
+    border: 1px solid #ccc; /* Viền select */
+    border-radius: 5px; /* Bo viền select */
+    color: #333; /* Màu văn bản trong select */
+    padding: 8px; /* Khoảng cách giữa nội dung và viền select */
+    margin-bottom: 10px; /* Khoảng cách giữa các select */
+}
+
+.login-table button{
+    align-self: center;
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(255, 255, 255, 0.9);; /* Set your desired background color */
+    border: 1px solid #fff;
+    padding:0;
+    text-align: center;
+}
+
+.footer p{
+    margin: 0;
+}
