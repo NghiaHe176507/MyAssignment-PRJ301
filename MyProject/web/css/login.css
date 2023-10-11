@@ -25,6 +25,8 @@ html{
     color: #FB5E00;
     margin-top: 20px; /* Adjust the top margin as needed */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Box shadow with a slight blur and opacity */
+    border-radius: 10px; /* Bo viền */
+
 }
 
 

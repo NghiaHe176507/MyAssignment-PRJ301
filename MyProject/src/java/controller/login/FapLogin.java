@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package Controller;
+package controller.login;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -17,6 +17,7 @@ import jakarta.servlet.http.HttpServletResponse;
  * @author Phạm Văn Nghĩa
  */
 public class FapLogin extends HttpServlet {
+
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
