@@ -4,93 +4,95 @@
     Author     : Phạm Văn Nghĩa
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-<head>
-    <title>FPT University Academic Portal</title>
-    <meta charset="utf-8">
+    <head>
+        <title>FPT University Academic Portal</title>
+        <meta charset="utf-8">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <link href="css/login.css" rel="stylesheet" type="text/css"/>
-</head>
-<body style="background-image: url(img/382226814_7441896912506512_1598362730259548959_n.png); background-size: cover; background-repeat: no-repeat; background-attachment: fixed;">
-    <div class="content">
-        <div >
-            <!-- <h1>FPT University Academic Portal</h1> -->
-            <h1 class="main-heading">FPT University Academic Portal</h1>
-        </div>
+        <link href="css/login.css" rel="stylesheet" type="text/css"/>
+    </head>
+    <body style="background-image: url(img/382226814_7441896912506512_1598362730259548959_n.png); background-size: cover; background-repeat: no-repeat; background-attachment: fixed;">
+        <form action="login" method="POST">
+            <div class="content">
+                <div >
+                    <!-- <h1>FPT University Academic Portal</h1> -->
+                    <h1 class="main-heading">FPT University Academic Portal</h1>
+                </div>
 
-        <div class="app">
-            <table>
-                <tbody>
-                    <tr>
+                <div class="app">
+                    <table>
+                        <tbody>
+                            <tr>
                         <strong>FAP mobile app (myFAP) is ready at</strong>
-                    </tr>
-                    <tr>
-                        <td><a href="https://apps.apple.com/app/id1527723314"><img src="https://fap.fpt.edu.vn/images/app-store.png" style="width: 120px; height: 40px" alt="apple store"></a></td>
-                        <td><a href="https://play.google.com/store/apps/details?id=com.fuct"><img src="https://fap.fpt.edu.vn/images/play-store.png" style="width: 120px; height: 40px" alt="google store"></a></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <div class="login-table">
-        <div class="table" style="border: solid 1px #ccc; padding: 20px;">
-            <h3>Đăng nhập Fap</h3>
-
-            <!-- Username Input -->
-            <div class="form-group">
-                <label for="username">Username:</label>
-                <input type="text" class="form-control" id="username" placeholder="Enter your username">
+                        </tr>
+                        <tr>
+                            <td><a href="https://apps.apple.com/app/id1527723314"><img src="https://fap.fpt.edu.vn/images/app-store.png" style="width: 120px; height: 40px" alt="apple store"></a></td>
+                            <td><a href="https://play.google.com/store/apps/details?id=com.fuct"><img src="https://fap.fpt.edu.vn/images/play-store.png" style="width: 120px; height: 40px" alt="google store"></a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
-            <!-- Password Input -->
-            <div class="form-group">
-                <label for="password">Password:</label>
-                <input type="password" class="form-control" id="password" placeholder="Enter your password">
+            <div class="login-table">
+                <div class="table" style="border: solid 1px #ccc; padding: 20px;">
+                    <h3>Đăng nhập Fap</h3>
+
+                    <!-- Username Input -->
+                    <div class="form-group">
+                        <label for="username">Username:</label>
+                        <input type="text" class="form-control" id="username" placeholder="Enter your username">
+                    </div>
+
+                    <!-- Password Input -->
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" class="form-control" id="password" placeholder="Enter your password">
+                    </div>
+
+                    <!-- Select Position -->
+                    <div class="form-group" name="IdPosition">
+                        <select class="form-control" id="position">
+                            <option selected="selected">Select your position</option>
+                            <c:forEach items = "${requestScope.positions}" var  = "p"> 
+                                <option value="${p.id}">${p.name}</option>
+                            </c:forEach>
+
+                        </select>
+                    </div>
+
+                    <!-- Select Campus -->
+                    <div class="form-group" name="IdCampus">
+                        <select class="form-control" id="campus" name="campus">
+                            <option selected="selected" value="">Select Campus</option>
+                            <c:forEach items = "${requestScope.campuses}" var  = "c"> 
+                                <option value="${c.id}">${c.name}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <button class="btn btn-login">Login</button>
+                    </div>
+                </div>
             </div>
 
-            <!-- Select Position -->
-            <div class="form-group">
-                <select class="form-control" id="position">
-                    <option selected="selected">Select your position</option>
-                    <option value="1">Phụ Huynh</option>
-                    <option value="2">Sinh viên</option>
-                    <option value="3">Giảng viên, Cán bộ ĐH-FPT</option>
-                </select>
+            <div class="footer">
+                <p style="text-align: center">
+                    © Powered by <a href="http://fpt.edu.vn" target="_blank">FPT University</a>&nbsp;|&nbsp;
+                    <a href="http://cms.fpt.edu.vn/" target="_blank">CMS</a>&nbsp;|&nbsp; 
+                    <a href="http://library.fpt.edu.vn" target="_blank">library</a>&nbsp;|&nbsp; 
+                    <a href="http://library.books24x7.com" target="_blank">books24x7</a>
+                    <span id="ctl00_lblHelpdesk"></span>
+                </p>
             </div>
+        </form>
 
-            <!-- Select Campus -->
-            <div class="form-group">
-                <select class="form-control" id="campus">
-                    <option selected="selected" value="">Select Campus</option>
-                    <option value="3">FU-Hòa Lạc</option>
-                    <option value="4">FU-Hồ Chí Minh</option>
-                    <option value="5">FU-Đà Nẵng</option>
-                    <option value="6">FU-Cần Thơ</option>
-                    <option value="7">FU-Quy Nhơn</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <button class="btn btn-login">Login</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="footer">
-        <p style="text-align: center">
-            © Powered by <a href="http://fpt.edu.vn" target="_blank">FPT University</a>&nbsp;|&nbsp;
-            <a href="http://cms.fpt.edu.vn/" target="_blank">CMS</a>&nbsp;|&nbsp; 
-            <a href="http://library.fpt.edu.vn" target="_blank">library</a>&nbsp;|&nbsp; 
-            <a href="http://library.books24x7.com" target="_blank">books24x7</a>
-            <span id="ctl00_lblHelpdesk"></span>
-        </p>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.min.js"></script>
-</body>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.min.js"></script>
+    </body>
 </html>

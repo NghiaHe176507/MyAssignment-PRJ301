@@ -9,32 +9,51 @@ package Entity;
  * @author Phạm Văn Nghĩa
  */
 public class Account extends BaseEntity {
-        private String username;
-        private String password;
-        private String displayname;
 
-        public String getUsername() {
-            return username;
-        }
+    private String username;
+    private String password;
+    private String displayname;
+    private int IdPos;
+    private int IdCampus;
 
-        public void setUsername(String username) {
-            this.username = username;
-        }
-
-        public String getPassword() {
-            return password;
-        }
-
-        public void setPassword(String password) {
-            this.password = password;
-        }
-
-        public String getDisplayname() {
-            return displayname;
-        }
-
-        public void setDisplayname(String displayname) {
-            this.displayname = displayname;
-        }
-
+    public int getIdPos() {
+        return IdPos;
     }
+
+    public void setIdPos(int IdPos) {
+        this.IdPos = IdPos;
+    }
+
+    public int getIdCampus() {
+        return IdCampus;
+    }
+
+    public void setIdCampus(int IdCampus) {
+        this.IdCampus = IdCampus;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getDisplayname() {
+        return displayname;
+    }
+
+    public void setDisplayname(String displayname) {
+        this.displayname = displayname;
+    }
+
+}

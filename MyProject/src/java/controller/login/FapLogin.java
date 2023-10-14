@@ -5,12 +5,17 @@
 
 package controller.login;
 
+import Dal.CampusDBContext;
+import Dal.PositionDBContext;
+import Entity.Campus;
+import Entity.Position;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 
 /**
  *
@@ -54,6 +59,14 @@ public class FapLogin extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        CampusDBContext cp = new CampusDBContext();
+        ArrayList<Campus> campuses = cp.list();
+        
+        PositionDBContext pb = new PositionDBContext();
+        ArrayList<Position> positions = pb.list();
+        
+        request.setAttribute("campuses", campuses);
+        request.setAttribute("positions", positions);
          request.getRequestDispatcher("view/login.jsp").forward(request, response);
 
     } 
