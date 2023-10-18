@@ -17,7 +17,7 @@
         <link href="css/login.css" rel="stylesheet" type="text/css"/>
     </head>
     <body style="background-image: url(img/382226814_7441896912506512_1598362730259548959_n.png); background-size: cover; background-repeat: no-repeat; background-attachment: fixed;">
-        <form action="login" method="POST">
+        <form action="login" method="POST" onsubmit="return validateForm()">
             <div class="content">
                 <div >
                     <!-- <h1>FPT University Academic Portal</h1> -->
@@ -42,40 +42,30 @@
             <div class="login-table">
                 <div class="table" style="border: solid 1px #ccc; padding: 20px;">
                     <h3>Đăng nhập Fap</h3>
-
-                    <!-- Username Input -->
                     <div class="form-group">
                         <label for="username">Username:</label>
-                        <input type="text" class="form-control" id="username" placeholder="Enter your username">
+                        <input type="text" class="form-control" id="username" name="username" placeholder="Enter your username" required>
                     </div>
-
-                    <!-- Password Input -->
                     <div class="form-group">
                         <label for="password">Password:</label>
-                        <input type="password" class="form-control" id="password" placeholder="Enter your password">
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
                     </div>
-
-                    <!-- Select Position -->
-                    <div class="form-group" name="IdPosition">
-                        <select class="form-control" id="position">
-                            <option selected="selected">Select your position</option>
-                            <c:forEach items = "${requestScope.positions}" var  = "p"> 
+                    <div class="form-group">
+                        <select class="form-control" id="position" name="pid" required>
+                            <option value="" disabled selected>Select your position</option>
+                            <c:forEach items="${requestScope.positions}" var="p">
                                 <option value="${p.id}">${p.name}</option>
                             </c:forEach>
-
                         </select>
                     </div>
-
-                    <!-- Select Campus -->
-                    <div class="form-group" name="IdCampus">
-                        <select class="form-control" id="campus" name="campus">
-                            <option selected="selected" value="">Select Campus</option>
-                            <c:forEach items = "${requestScope.campuses}" var  = "c"> 
+                    <div class="form-group">
+                        <select class="form-control" id="campus" name="cid" required>
+                            <option value="" disabled selected>Select Campus</option>
+                            <c:forEach items="${requestScope.campuses}" var="c">
                                 <option value="${c.id}">${c.name}</option>
                             </c:forEach>
                         </select>
                     </div>
-
                     <div class="form-group">
                         <button class="btn btn-login">Login</button>
                     </div>
@@ -94,5 +84,24 @@
         </form>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.min.js"></script>
+
+        <script>
+            function validateForm() {
+                var username = document.getElementById("username").value;
+                var password = document.getElementById("password").value;
+                var position = document.getElementById("position").value;
+                var campus = document.getElementById("campus").value;
+
+                if (username === "" || password === "" || position === "" || campus === "") {
+                    alert("Please fill in all required fields.");
+                    return false;
+                }
+                if (position === "" || campus === "") {
+                    alert("Please select your position and campus.");
+                    return false;
+                }
+                return true;
+            }
+        </script>
     </body>
 </html>

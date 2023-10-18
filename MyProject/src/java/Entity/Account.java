@@ -13,23 +13,23 @@ public class Account extends BaseEntity {
     private String username;
     private String password;
     private String displayname;
-    private int IdPos;
-    private int IdCampus;
+    private int pid;
+    private int cid;
 
-    public int getIdPos() {
-        return IdPos;
+    public int getPid() {
+        return pid;
     }
 
-    public void setIdPos(int IdPos) {
-        this.IdPos = IdPos;
+    public void setPid(int pid) {
+        this.pid = pid;
     }
 
-    public int getIdCampus() {
-        return IdCampus;
+    public int getCid() {
+        return cid;
     }
 
-    public void setIdCampus(int IdCampus) {
-        this.IdCampus = IdCampus;
+    public void setCid(int cid) {
+        this.cid = cid;
     }
 
     public String getUsername() {

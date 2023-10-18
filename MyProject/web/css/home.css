@@ -1,0 +1,66 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+html{
+    font-family: Arial, Helvetica, sans-serif;
+    scroll-behavior: smooth;
+    /* Trang di chuyển theo kiểu cuộn */
+}
+
+.container {
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.table-grade{
+    text-align: center;
+    border: 1px solid #ddd; 
+    border-radius: 10px; 
+    padding: 20px; 
+    /* margin: 10px; Khoảng cách giữa các bảng */
+}
+
+.breadcrumb{
+    padding: 8px 15px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    list-style: none;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    
+}
+
+.label-success {
+    background-color: #5cb85c;
+
+}
+.label {
+    display: inline;
+    padding: 0.2em 0.6em 0.3em;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 0.25em;
+
+}
+
+.btn-grade {
+    color: #fff;
+    background-color: #FB5E00;
+    border-color: #FB5E00;
+}
+
+.btn-grade:hover {
+    color: #fff;
+    background-color: #C23321;
+    border-color: #C23321;
+    cursor: pointer;
+}
