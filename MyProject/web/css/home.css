@@ -9,6 +9,10 @@ html{
     /* Trang di chuyển theo kiểu cuộn */
 }
 
+h1{
+    margin-left: 35px;
+}
+
 .container {
     padding-right: 15px;
     padding-left: 15px;
