@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    <form action="mark" method="GET">
+    <form action="mark" method="POST">
         <div class="container">
             <div class="row content">
                 <div class="col-md-8">
@@ -48,10 +48,738 @@
                             <span id="ctl00_lblLogIn"
                                 class="label label-success">${sessionScope.account.displayname}</span></a> |
                         <a href="<%= request.getContextPath() %>/logout" class="label label-success">logout</a> |
-                        <span id="ctl00_lblCampusName" class="label label-success"> FPT University</span>
+                        <span id="ctl00_lblCampusName" class="label label-success">Campus:
+                            ${requestScope.campus[sessionScope.account.cid - 1].name}</span>
                     </div>
                 </div>
             </div>
+
+
+            <h2>Grade report for transcript
+                <span id="ctl00_mainContent_lblRollNumber"><span class="label label-default">HE176507</span> - <span
+                        class="label label-info">BIT_SE_17C_NJ</span></span><span id="insert_div">
+                    <null> - </null><a
+                        href="https://ezse.net/other/grade/gpa.html?data=U1dQMzkx2E5hTtgKSVRFMzAyY9hOYU7YClNXUjMwMthOYU7YClNXVDMwMdhOYU7YCkZFUjIwMthOYU7YCkVOVzQ5MmPYTmFO2ApJU0MzMDHYTmFO2ApQUk0zOTLYTmFO2ApTV0QzOTLYTmFO2ApTRE4zMDFt2E5hTtgKRVhFMTAx2E5hTtgKRVhFMjAx2E5hTtgKUE1HMjAyY9hOYU7YCldEVTIwM2PYTmFO2ApNTE4xMTHYTmFO2ApTRS0wMDA02E5hTtgKTUxOMTIy2E5hTtgKU0VQNDkw2E5hTtgKSENNMjAy2E5hTtgKTUxOMTMx2E5hTtgKVk5SMjAy2E5hTtgKVE1JMTAx2DPYNy40ClNTTDEwMWPYM9g1CkNTSTEwNNgz2DYuNgpQUkYxOTLYM9g2LjEKTUFFMTAx2DPYNi45CkNFQTIwMdgz2DcuOApQUk8xOTLYM9g3LjIKTUFEMTAx2DPYNy42Ck9TRzIwMtgz2DcuOApOV0MyMDNj2DPYOS4yClNTRzEwNNgz2DcuOQpKUEQxMTPYM9g3LjkKQ1NEMjAx2DPYNS40CkRCSTIwMtgz2DcuNwpNQVMyOTHYM9gKSlBEMTIz2DPYCklPVDEwMtgz2DguMwpQUkozMDHYM9gKU1dFMjAxY9hOYU7Y"
+                        target="_blank" title="Click to edit grade and recalculate GPA" class="label label-default">GPA:
+                        7.253</a><br><br>
+                    <h4><a href="https://ezse.net/other/grade/gpa.html?data=VE1JMTAx2DPYNy40" target="_blank"
+                            class="label label-primary" title="TMI101: 7.4 x 3
+                    Average: 7.4
+                    
+                    Click to edit grade and recalculate GPA">Spring2022: 7.4</a> <a
+                            href="https://ezse.net/other/grade/gpa.html?data=U1NMMTAxY9gz2DUKQ1NJMTA02DPYNi42ClBSRjE5Mtgz2DYuMQpNQUUxMDHYM9g2LjkKQ0VBMjAx2DPYNy44"
+                            target="_blank" class="label label-success" title="SSL101c: 5 x 3
+                    CSI104: 6.6 x 3
+                    PRF192: 6.1 x 3
+                    MAE101: 6.9 x 3
+                    CEA201: 7.8 x 3
+                    Average: 6.48
+                    
+                    Click to edit grade and recalculate GPA">Fall2022: 6.48</a> <a
+                            href="https://ezse.net/other/grade/gpa.html?data=UFJPMTky2DPYNy4yCk1BRDEwMdgz2DcuNgpPU0cyMDLYM9g3LjgKTldDMjAzY9gz2DkuMgpTU0cxMDTYM9g3Ljk="
+                            target="_blank" class="label label-primary" title="PRO192: 7.2 x 3
+                    MAD101: 7.6 x 3
+                    OSG202: 7.8 x 3
+                    NWC203c: 9.2 x 3
+                    SSG104: 7.9 x 3
+                    Average: 7.94
+                    
+                    Click to edit grade and recalculate GPA">Spring2023: 7.94</a> <a
+                            href="https://ezse.net/other/grade/gpa.html?data=SlBEMTEz2DPYNy45CkNTRDIwMdgz2DUuNApEQkkyMDLYM9g3Ljc="
+                            target="_blank" class="label label-success" title="JPD113: 7.9 x 3
+                    CSD201: 5.4 x 3
+                    DBI202: 7.7 x 3
+                    Average: 7
+                    
+                    Click to edit grade and recalculate GPA">Summer2023: 7</a> <a
+                            href="https://ezse.net/other/grade/gpa.html?data=TUFTMjkx2DPYCkpQRDEyM9gz2ApJT1QxMDLYM9g4LjMKUFJKMzAx2DPYClNXRTIwMWPYTmFO2A=="
+                            target="_blank" class="label label-primary" title="MAS291:  x 3
+                    JPD123:  x 3
+                    IOT102: 8.3 x 3
+                    PRJ301:  x 3
+                    SWE201c:  x NaN
+                    Average: 8.3
+                    
+                    Click to edit grade and recalculate GPA">Fall2023: 8.3</a> </h4>
+                </span>
+                <div>
+                    <a class="btn" disabled="" style="margin-top: 5px;">Exclude: </a>
+                    <input value="GDQP,ENT,VOV,TRS,ÐSA,LAB,OJS,OJT,SYB301" id="excludedSubjectCodes" type="text"
+                        onkeydown="return event.key != 'Enter';" class="form-control"
+                        style="width: calc(100% - 300px);display: inline;"
+                        placeholder="Enter the SUBJECT CODEs to EXCLUDE from GPA calculation, separated by commas (,)"
+                        fdprocessedid="iuje6y">
+                    <a class="btn btn-warning" id="btnExclude" style="margin-top: 5px;">OK</a>
+                    <a class="btn btn-primary" id="btnReset" style="margin-top: 5px;">Reset</a>
+                </div>
+            </h2>
+
+            <table class="table table-hover">
+                <thead class="thead-inverse">
+                    <tr>
+                        <th style="width:10px">No</th>
+                        <th style="width:15px">Term</th>
+                        <th style="width:80px">Semester</th>
+                        <th style="width:60px">Subject Code</th>
+                        <th style="width:60px">Prerequisite</th>
+                        <th style="width:80px">Replaced Subject</th>
+                        <th>Subject Name</th>
+                        <th style="width:10px">Credit</th>
+                        <th style="width:20px">Grade</th>
+                        <th style="width:80px">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>0</td>
+                        <td class="">Fall2021</td>
+                        <td class="">GDQP</td>
+                        <td style="width:60px"></td>
+                        <td></td>
+                        <td>Military training</td>
+                        <td>0</td>
+                        <td><span class="label label-primary">7.8</span></td>
+                        <td><span class="label label-success">Passed</span></td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>0</td>
+                        <td class="">Summer2022</td>
+                        <td class="">VOV124</td>
+                        <td style="width:60px">VOV114</td>
+                        <td></td>
+                        <td>Vovinam 2</td>
+                        <td>2</td>
+                        <td><span class="label label-primary">6.8</span></td>
+                        <td><span class="label label-success">Passed</span></td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>0</td>
+                        <td class="">Summer2022</td>
+                        <td class="">VOV134</td>
+                        <td style="width:60px">VOV124</td>
+                        <td></td>
+                        <td>Vovinam 3</td>
+                        <td>2</td>
+                        <td><span class="label label-primary">7</span></td>
+                        <td><span class="label label-success">Passed</span></td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>0</td>
+                        <td class="">Spring2022</td>
+                        <td class="">VOV114</td>
+                        <td style="width:60px"></td>
+                        <td></td>
+                        <td>Vovinam 1</td>
+                        <td>2</td>
+                        <td><span class="label label-primary">8.5</span></td>
+                        <td><span class="label label-success">Passed</span></td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>0</td>
+                        <td class="">Summer2022</td>
+                        <td class="">TRS601</td>
+                        <td style="width:60px">TRS501/LUK5</td>
+                        <td></td>
+                        <td>Transition</td>
+                        <td>0</td>
+                        <td><span class="label label-primary">6</span></td>
+                        <td><span class="label label-success">Passed</span></td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>0</td>
+                        <td class="Spring2022">Spring2022</td>
+                        <td class="Spring2022">TMI101</td>
+                        <td style="width:60px"></td>
+                        <td>ÐSA102</td>
+                        <td>Traditional musical instrument</td>
+                        <td>3</td>
+                        <td><span class="label label-primary">7.4</span></td>
+                        <td><span class="label label-success">Passed</span></td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>1</td>
+                        <td class="Fall2022">Fall2022</td>
+                        <td class="Fall2022">SSL101c</td>
+                        <td style="width:60px"></td>
+                        <td></td>
+                        <td>Academic Skills for University Success</td>
+                        <td>3</td>
+                        <td><span class="label label-primary">5</span></td>
+                        <td><span class="label label-success">Passed</span></td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td>1</td>
+                        <td class="Fall2022">Fall2022</td>
+                        <td class="Fall2022">CSI104</td>
+                        <td style="width:60px"></td>
+                        <td></td>
+                        <td>Introduction to Computer Science</td>
+                        <td>3</td>
+                        <td><span class="label label-primary">6.6</span></td>
+                        <td><span class="label label-success">Passed</span></td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td>1</td>
+                        <td class="Fall2022">Fall2022</td>
+                        <td class="Fall2022">PRF192</td>
+                        <td style="width:60px"></td>
+                        <td></td>
+                        <td>Programming Fundamentals</td>
+                        <td>3</td>
+                        <td><span class="label label-primary">6.1</span></td>
+                        <td><span class="label label-success">Passed</span></td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>1</td>
+                        <td class="Fall2022">Fall2022</td>
+                        <td class="Fall2022">MAE101</td>
+                        <td style="width:60px"></td>
+                        <td></td>
+                        <td>Mathematics for Engineering</td>
+                        <td>3</td>
+                        <td><span class="label label-primary">6.9</span></td>
+                        <td><span class="label label-success">Passed</span></td>
+                    </tr>
+                    <tr>
+                        <td>11</td>
+                        <td>1</td>
+                        <td class="Fall2022">Fall2022</td>
+                        <td class="Fall2022">CEA201</td>
+                        <td style="width:60px"></td>
+                        <td></td>
+                        <td>Computer Organization and Architecture</td>
+                        <td>3</td>
+                        <td><span class="label label-primary">7.8</span></td>
+                        <td><span class="label label-success">Passed</span></td>
+                    </tr>
+                    <tr>
+                        <td>12</td>
+                        <td>2</td>
+                        <td class="Spring2023">Spring2023</td>
+                        <td class="Spring2023">PRO192</td>
+                        <td style="width:60px">PRF192</td>
+                        <td></td>
+                        <td>Object-Oriented Programming</td>
+                        <td>3</td>
+                        <td><span class="label label-primary">7.2</span></td>
+                        <td><span class="label label-success">Passed</span></td>
+                    </tr>
+                    <tr>
+                        <td>13</td>
+                        <td>2</td>
+                        <td class="Spring2023">Spring2023</td>
+                        <td class="Spring2023">MAD101</td>
+                        <td style="width:60px"></td>
+                        <td></td>
+                        <td>Discrete mathematics</td>
+                        <td>3</td>
+                        <td><span class="label label-primary">7.6</span></td>
+                        <td><span class="label label-success">Passed</span></td>
+                    </tr>
+                    <tr>
+                        <td>14</td>
+                        <td>2</td>
+                        <td class="Spring2023">Spring2023</td>
+                        <td class="Spring2023">OSG202</td>
+                        <td style="width:60px"></td>
+                        <td></td>
+                        <td>Operating Systems</td>
+                        <td>3</td>
+                        <td><span class="label label-primary">7.8</span></td>
+                        <td><span class="label label-success">Passed</span></td>
+                    </tr>
+                    <tr>
+                        <td>15</td>
+                        <td>2</td>
+                        <td class="Spring2023">Spring2023</td>
+                        <td class="Spring2023">NWC203c</td>
+                        <td style="width:60px"></td>
+                        <td></td>
+                        <td>Computer Networking</td>
+                        <td>3</td>
+                        <td><span class="label label-primary">9.2</span></td>
+                        <td><span class="label label-success">Passed</span></td>
+                    </tr>
+                    <tr>
+                        <td>16</td>
+                        <td>2</td>
+                        <td class="Spring2023">Spring2023</td>
+                        <td class="Spring2023">SSG104</td>
+                        <td style="width:60px"></td>
+                        <td></td>
+                        <td>Communication and In-Group Working Skills</td>
+                        <td>3</td>
+                        <td><span class="label label-primary">7.9</span></td>
+                        <td><span class="label label-success">Passed</span></td>
+                    </tr>
+                    <tr>
+                        <td>17</td>
+                        <td>3</td>
+                        <td class="Summer2023">Summer2023</td>
+                        <td class="Summer2023">JPD113</td>
+                        <td style="width:60px"></td>
+                        <td></td>
+                        <td>Elementary Japanese 1-A1.1</td>
+                        <td>3</td>
+                        <td><span class="label label-primary">7.9</span></td>
+                        <td><span class="label label-success">Passed</span></td>
+                    </tr>
+                    <tr>
+                        <td>18</td>
+                        <td>3</td>
+                        <td class="Summer2023">Summer2023</td>
+                        <td class="Summer2023">CSD201</td>
+                        <td style="width:60px">PRO192</td>
+                        <td></td>
+                        <td>Data Structures and Algorithms</td>
+                        <td>3</td>
+                        <td><span class="label label-primary">5.4</span></td>
+                        <td><span class="label label-success">Passed</span></td>
+                    </tr>
+                    <tr>
+                        <td>19</td>
+                        <td>3</td>
+                        <td class="Summer2023">Summer2023</td>
+                        <td class="Summer2023">DBI202</td>
+                        <td style="width:60px"></td>
+                        <td></td>
+                        <td>Introduction to Databases</td>
+                        <td>3</td>
+                        <td><span class="label label-primary">7.7</span></td>
+                        <td><span class="label label-success">Passed</span></td>
+                    </tr>
+                    <tr>
+                        <td>20</td>
+                        <td>3</td>
+                        <td class="">Summer2023</td>
+                        <td class="">LAB211</td>
+                        <td style="width:60px">PRO192</td>
+                        <td></td>
+                        <td>OOP with Java Lab</td>
+                        <td>3</td>
+                        <td><span class="label label-primary"></span></td>
+                        <td><span class="label label-success">Passed</span></td>
+                    </tr>
+                    <tr>
+                        <td>21</td>
+                        <td>3</td>
+                        <td class="">Summer2023</td>
+                        <td class="">WED201c</td>
+                        <td style="width:60px"></td>
+                        <td></td>
+                        <td>Web Design</td>
+                        <td>3</td>
+                        <td><span class="label label-danger">4.8</span></td>
+                        <td><span class="label label-danger">Not passed</span></td>
+                    </tr>
+                    <tr>
+                        <td>22</td>
+                        <td>4</td>
+                        <td class="">Fall2023</td>
+                        <td class="">MAS291</td>
+                        <td style="width:60px">MAE101/MAC101</td>
+                        <td></td>
+                        <td>Statistics and Probability</td>
+                        <td>3</td>
+                        <td></td>
+                        <td><span class="label label-info">Studying</span></td>
+                    </tr>
+                    <tr>
+                        <td>23</td>
+                        <td>4</td>
+                        <td class="">Fall2023</td>
+                        <td class="">JPD123</td>
+                        <td style="width:60px">JPD113</td>
+                        <td></td>
+                        <td>Elementary Japanese 1-A1.2</td>
+                        <td>3</td>
+                        <td></td>
+                        <td><span class="label label-info">Studying</span></td>
+                    </tr>
+                    <tr>
+                        <td>24</td>
+                        <td>4</td>
+                        <td class="Fall2023">Fall2023</td>
+                        <td class="Fall2023">IOT102</td>
+                        <td style="width:60px"></td>
+                        <td></td>
+                        <td>Internet of Things</td>
+                        <td>3</td>
+                        <td><span class="label label-primary">8.3</span></td>
+                        <td><span class="label label-success">Passed</span></td>
+                    </tr>
+                    <tr>
+                        <td>25</td>
+                        <td>4</td>
+                        <td class="">Fall2023</td>
+                        <td class="">PRJ301</td>
+                        <td style="width:60px">DBI202&amp;PRO192</td>
+                        <td></td>
+                        <td>Java Web Application Development</td>
+                        <td>3</td>
+                        <td></td>
+                        <td><span class="label label-info">Studying</span></td>
+                    </tr>
+                    <tr>
+                        <td>26</td>
+                        <td>4</td>
+                        <td class="">Fall2023</td>
+                        <td style="width:60px" class="">SWE201c</td>
+                        <td style="width:60px"></td>
+                        <td><span class="label label-warning"></span></td>
+                        <td>Introduction to Software Engineering</td>
+                        <td></td>
+                        <td> </td>
+                        <td><span class="label label-info">Studying</span></td>
+                    </tr>
+                    <tr>
+                        <td>27</td>
+                        <td>5</td>
+                        <td class=""></td>
+                        <td style="width:60px" class="">SWP391</td>
+                        <td style="width:60px">SWE201c&amp;PRJ301</td>
+                        <td><span class="label label-warning"></span></td>
+                        <td>Application development project</td>
+                        <td></td>
+                        <td> </td>
+                        <td><span class="label label-default">Not started</span></td>
+                    </tr>
+                    <tr>
+                        <td>28</td>
+                        <td>5</td>
+                        <td class=""></td>
+                        <td style="width:60px" class="">ITE302c</td>
+                        <td style="width:60px"></td>
+                        <td><span class="label label-warning"></span></td>
+                        <td>Ethics in IT</td>
+                        <td></td>
+                        <td> </td>
+                        <td><span class="label label-default">Not started</span></td>
+                    </tr>
+                    <tr>
+                        <td>29</td>
+                        <td>5</td>
+                        <td class=""></td>
+                        <td style="width:60px" class="">SWR302</td>
+                        <td style="width:60px">SWE201c/SWE102</td>
+                        <td><span class="label label-warning"></span></td>
+                        <td>Software Requirement</td>
+                        <td></td>
+                        <td> </td>
+                        <td><span class="label label-default">Not started</span></td>
+                    </tr>
+                    <tr>
+                        <td>30</td>
+                        <td>5</td>
+                        <td class=""></td>
+                        <td style="width:60px" class="">SWT301</td>
+                        <td style="width:60px">SWE201c/SWE102</td>
+                        <td><span class="label label-warning"></span></td>
+                        <td>Software Testing</td>
+                        <td></td>
+                        <td> </td>
+                        <td><span class="label label-default">Not started</span></td>
+                    </tr>
+                    <tr>
+                        <td>31</td>
+                        <td>5</td>
+                        <td class=""></td>
+                        <td style="width:60px" class="">FER202</td>
+                        <td style="width:60px"></td>
+                        <td><span class="label label-warning"></span></td>
+                        <td>Front-End web development with React</td>
+                        <td></td>
+                        <td> </td>
+                        <td><span class="label label-default">Not started</span></td>
+                    </tr>
+                    <tr>
+                        <td>32</td>
+                        <td>6</td>
+                        <td class=""></td>
+                        <td style="width:60px" class="">ENW492c</td>
+                        <td style="width:60px"></td>
+                        <td><span class="label label-warning"></span></td>
+                        <td>Writing Research Papers</td>
+                        <td></td>
+                        <td> </td>
+                        <td><span class="label label-default">Not started</span></td>
+                    </tr>
+                    <tr>
+                        <td>33</td>
+                        <td>6</td>
+                        <td class=""></td>
+                        <td style="width:60px" class="">OJT202</td>
+                        <td style="width:60px"></td>
+                        <td><span class="label label-warning"></span></td>
+                        <td>On the job training</td>
+                        <td></td>
+                        <td> </td>
+                        <td><span class="label label-default">Not started</span></td>
+                    </tr>
+                    <tr>
+                        <td>34</td>
+                        <td>7</td>
+                        <td class=""></td>
+                        <td style="width:60px" class="">ISC301</td>
+                        <td style="width:60px"></td>
+                        <td><span class="label label-warning"></span></td>
+                        <td>e-Commerce</td>
+                        <td></td>
+                        <td> </td>
+                        <td><span class="label label-default">Not started</span></td>
+                    </tr>
+                    <tr>
+                        <td>35</td>
+                        <td>7</td>
+                        <td class=""></td>
+                        <td style="width:60px" class="">PRM392</td>
+                        <td style="width:60px">PRO192</td>
+                        <td><span class="label label-warning"></span></td>
+                        <td>Mobile Programming</td>
+                        <td></td>
+                        <td> </td>
+                        <td><span class="label label-default">Not started</span></td>
+                    </tr>
+                    <tr>
+                        <td>36</td>
+                        <td>7</td>
+                        <td class=""></td>
+                        <td style="width:60px" class="">SWD392</td>
+                        <td style="width:60px">PRO192&amp;(&amp;SWE201c/SWE102)</td>
+                        <td><span class="label label-warning"></span></td>
+                        <td>SW Architecture and Design</td>
+                        <td></td>
+                        <td> </td>
+                        <td><span class="label label-default">Not started</span></td>
+                    </tr>
+                    <tr>
+                        <td>37</td>
+                        <td>7</td>
+                        <td class=""></td>
+                        <td style="width:60px" class="">SDN301m</td>
+                        <td style="width:60px">DBI202&amp;FER201m</td>
+                        <td><span class="label label-warning"></span></td>
+                        <td>Server-Side development with NodeJS, Express, and MongoDB</td>
+                        <td></td>
+                        <td> </td>
+                        <td><span class="label label-default">Not started</span></td>
+                    </tr>
+                    <tr>
+                        <td>38</td>
+                        <td>7</td>
+                        <td class=""></td>
+                        <td style="width:60px" class="">EXE101</td>
+                        <td style="width:60px"></td>
+                        <td><span class="label label-warning"></span></td>
+                        <td>Experiential Entrepreneurship 1</td>
+                        <td></td>
+                        <td> </td>
+                        <td><span class="label label-default">Not started</span></td>
+                    </tr>
+                    <tr>
+                        <td>39</td>
+                        <td>8</td>
+                        <td class=""></td>
+                        <td style="width:60px" class="">EXE201</td>
+                        <td style="width:60px">EXE101</td>
+                        <td><span class="label label-warning"></span></td>
+                        <td>Experiential Entrepreneurship 2</td>
+                        <td></td>
+                        <td> </td>
+                        <td><span class="label label-default">Not started</span></td>
+                    </tr>
+                    <tr>
+                        <td>40</td>
+                        <td>8</td>
+                        <td class=""></td>
+                        <td style="width:60px" class="">PMG202c</td>
+                        <td style="width:60px"></td>
+                        <td><span class="label label-warning">PMG201c</span></td>
+                        <td>Project management</td>
+                        <td></td>
+                        <td> </td>
+                        <td><span class="label label-default">Not started</span></td>
+                    </tr>
+                    <tr>
+                        <td>41</td>
+                        <td>8</td>
+                        <td class=""></td>
+                        <td style="width:60px" class="">WDU203c</td>
+                        <td style="width:60px"></td>
+                        <td><span class="label label-warning"></span></td>
+                        <td>UI/UX Design</td>
+                        <td></td>
+                        <td> </td>
+                        <td><span class="label label-default">Not started</span></td>
+                    </tr>
+                    <tr>
+                        <td>42</td>
+                        <td>8</td>
+                        <td class=""></td>
+                        <td style="width:60px" class="">MLN111</td>
+                        <td style="width:60px"></td>
+                        <td><span class="label label-warning"></span></td>
+                        <td>Philosophy of Marxism – Leninism</td>
+                        <td></td>
+                        <td> </td>
+                        <td><span class="label label-default">Not started</span></td>
+                    </tr>
+                    <tr>
+                        <td>43</td>
+                        <td>8</td>
+                        <td class=""></td>
+                        <td style="width:60px" class="">SE-0004</td>
+                        <td style="width:60px"></td>
+                        <td><span class="label label-warning"></span></td>
+                        <td>Elective 4</td>
+                        <td></td>
+                        <td> </td>
+                        <td><span class="label label-default">Not started</span></td>
+                    </tr>
+                    <tr>
+                        <td>44</td>
+                        <td>8</td>
+                        <td class=""></td>
+                        <td style="width:60px" class="">MLN122</td>
+                        <td style="width:60px"></td>
+                        <td><span class="label label-warning"></span></td>
+                        <td>Political economics of Marxism – Leninism</td>
+                        <td></td>
+                        <td> </td>
+                        <td><span class="label label-default">Not started</span></td>
+                    </tr>
+                    <tr>
+                        <td>45</td>
+                        <td>9</td>
+                        <td class=""></td>
+                        <td style="width:60px" class="">SEP490</td>
+                        <td style="width:60px"></td>
+                        <td><span class="label label-warning"></span></td>
+                        <td>SE Capstone Project</td>
+                        <td></td>
+                        <td> </td>
+                        <td><span class="label label-default">Not started</span></td>
+                    </tr>
+                    <tr>
+                        <td>46</td>
+                        <td>9</td>
+                        <td class=""></td>
+                        <td style="width:60px" class="">HCM202</td>
+                        <td style="width:60px">MLN111/|MLN101&amp;MLN122</td>
+                        <td><span class="label label-warning"></span></td>
+                        <td>Ho Chi Minh Ideology</td>
+                        <td></td>
+                        <td> </td>
+                        <td><span class="label label-default">Not started</span></td>
+                    </tr>
+                    <tr>
+                        <td>47</td>
+                        <td>9</td>
+                        <td class=""></td>
+                        <td style="width:60px" class="">MLN131</td>
+                        <td style="width:60px">MLN111/|MLN101&amp;MLN122</td>
+                        <td><span class="label label-warning"></span></td>
+                        <td>Scientific socialism</td>
+                        <td></td>
+                        <td> </td>
+                        <td><span class="label label-default">Not started</span></td>
+                    </tr>
+                    <tr>
+                        <td>48</td>
+                        <td>9</td>
+                        <td class=""></td>
+                        <td style="width:60px" class="">VNR202</td>
+                        <td style="width:60px">MLN111/|MLN101&amp;MLN122</td>
+                        <td><span class="label label-warning"></span></td>
+                        <td>History of Việt Nam Communist Party</td>
+                        <td></td>
+                        <td> </td>
+                        <td><span class="label label-default">Not started</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table>
+                <tbody>
+                    <tr>
+                        <td valign="top" align="left">
+                            <div id="ctl00_mainContent_divDNTN"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top" align="left">
+                            <h2><span class="label label-primary">Những môn ngoài khung chương trình</span></h2>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top">
+                            <div id="ctl00_mainContent_divNotGrade">
+                                <table class="table table-hover">
+                                    <thead class="thead-inverse">
+                                        <tr>
+                                            <th style="width:10px">No</th>
+                                            <th style="width:40px">Semester</th>
+                                            <th style="width:40px">SubjectCode</th>
+                                            <th>SubjectName</th>
+                                            <th>Credit</th>
+                                            <th style="width:20px">Grade</th>
+                                            <th style="width:55px">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>Fall2021</td>
+                                            <td>ENT104</td>
+                                            <td>Top Notch 1</td>
+                                            <td>0</td>
+                                            <td><span class="label label-primary">7.9</span></td>
+                                            <td><span class="label label-success">Passed</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>2</td>
+                                            <td>Spring2022</td>
+                                            <td>ENT203</td>
+                                            <td>Top Notch 2</td>
+                                            <td>0</td>
+                                            <td><span class="label label-primary">7</span></td>
+                                            <td><span class="label label-success">Passed</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>3</td>
+                                            <td>Spring2022</td>
+                                            <td>TRS401</td>
+                                            <td>English 4</td>
+                                            <td>0</td>
+                                            <td><span class="label label-primary">7.7</span></td>
+                                            <td><span class="label label-success">Passed</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>4</td>
+                                            <td>Summer2022</td>
+                                            <td>TRS501</td>
+                                            <td>English 5</td>
+                                            <td>0</td>
+                                            <td><span class="label label-primary">5.6</span></td>
+                                            <td><span class="label label-success">Passed</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
 
             <div class="footer">
                 <div id="ctl00_divSupport" style="text-align: center">

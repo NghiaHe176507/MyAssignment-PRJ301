@@ -19,7 +19,7 @@ import java.util.ArrayList;
  *
  * @author Phạm Văn Nghĩa
  */
-public class FapHome extends BasedRequiredAuthenticationController {
+public class MarkReport extends BasedRequiredAuthenticationController {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,23 +38,19 @@ public class FapHome extends BasedRequiredAuthenticationController {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet FapHome</title>");
+            out.println("<title>Servlet MarkReport</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet FapHome at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet MarkReport at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
-     * Handles the HTTP <code>GET</code> method.
+     * Returns a short description of the servlet.
      *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @return a String containing servlet description
      */
     @Override
     public String getServletInfo() {
@@ -62,20 +58,19 @@ public class FapHome extends BasedRequiredAuthenticationController {
     }// </editor-fold>
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response, Account account) throws ServletException, IOException {
-        AccountDBContext db = new AccountDBContext();
-        ArrayList<Account> acc = db.list();
-        
+    protected void doGet(HttpServletRequest request, HttpServletResponse response, Account LoggedUser) throws ServletException, IOException {
         CampusDBContext cb = new CampusDBContext();
         ArrayList<Campus> campus = cb.list();
 
+        AccountDBContext db = new AccountDBContext();
+        ArrayList<Account> acc = db.list();
         request.setAttribute("campus", campus);
         request.setAttribute("acc", acc);
-        request.getRequestDispatcher("view/home.jsp").forward(request, response);
+        request.getRequestDispatcher("view/mark.jsp").forward(request, response);
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response, Account account) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response, Account LoggedUser) throws ServletException, IOException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 

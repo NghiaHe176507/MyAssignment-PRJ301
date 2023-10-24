@@ -9,7 +9,7 @@
 <html>
 
     <head>
-        <title>FPT University Academic Portal</title>
+        <title>Home</title>
         <meta charset="utf-8">
 
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -49,7 +49,7 @@
                             <a href="?view=user">
                                 <span id="ctl00_lblLogIn" class="label label-success">${sessionScope.account.displayname}</span></a> |
                             <a href="<%= request.getContextPath() %>/logout" class="label label-success">logout</a> |
-                            <span id="ctl00_lblCampusName" class="label label-success" "> FPT University</span>
+                            <span id="ctl00_lblCampusName" class="label label-success" "> Campus: ${requestScope.campus[sessionScope.account.cid - 1].name}</span>
                         </div>
                         <!-- <div style="position: absolute; top: -35px; right: 30px; width: 150px;"></div> -->
                     </div>
@@ -59,8 +59,7 @@
                     <div class="col-md-6 table-grade">
                         <h2>Mark Report</h2>
                         <p>View scores and results for each subject in the courses.</p>
-                        <!-- Thêm nút bấm cho Mark Report -->
-                        <a href="link-to-mark-report" class="btn btn-grade">View Mark Report</a>
+                        <a href="<%= request.getContextPath() %>/mark" class="btn btn-grade">View Mark Report</a>
                     </div>
                     <div class="col-md-6 table-grade">
                         <h2>Grade Transcript</h2>

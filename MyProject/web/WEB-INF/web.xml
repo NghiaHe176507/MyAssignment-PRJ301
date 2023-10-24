@@ -14,7 +14,11 @@
     </servlet>
     <servlet>
         <servlet-name>MarkReport</servlet-name>
-        <servlet-class>controller.grade.MarkReport</servlet-class>
+        <servlet-class>controller.home.MarkReport</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GradeTranscript</servlet-name>
+        <servlet-class>controller.home.GradeTranscript</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>FapLogin</servlet-name>
@@ -31,6 +35,10 @@
     <servlet-mapping>
         <servlet-name>MarkReport</servlet-name>
         <url-pattern>/mark</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GradeTranscript</servlet-name>
+        <url-pattern>/transcript</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

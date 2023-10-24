@@ -9,7 +9,7 @@
 <html>
 
     <head>
-        <title>FPT University Academic Portal</title>
+        <title>Mark Report</title>
         <meta charset="utf-8">
 
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -17,7 +17,7 @@
     </head>
 
     <body>
-        <form action="mark" method="GET">
+        <form action="mark" method="POST">
             <div class="container">
                 <div class="row content">
                     <div class="col-md-8">
@@ -52,7 +52,7 @@
                             <a href="?view=user">
                                 <span id="ctl00_lblLogIn" class="label label-success">${sessionScope.account.displayname}</span></a> | 
                                 <a href="<%= request.getContextPath() %>/logout" class="label label-success">logout</a> |
-                            <span id="ctl00_lblCampusName" class="label label-success"> FPT University</span>
+                            <span id="ctl00_lblCampusName" class="label label-success">Campus: ${requestScope.campus[sessionScope.account.cid - 1].name}</span>
                         </div>
                     </div>
                 </div>
