@@ -26,10 +26,10 @@ public class CampusDBContext extends DBContext<Campus>{
             PreparedStatement stm = connection.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
             while(rs.next()){
-                Campus c = new Campus();
-                c.setId(rs.getInt("IdCampus"));
-                c.setName(rs.getString("NameCampus"));
-                campuses.add(c);
+                Campus cp = new Campus();
+                cp.setId(rs.getInt("IdCampus"));
+                cp.setName(rs.getString("NameCampus"));
+                campuses.add(cp);
             }
         } catch (SQLException ex) {
             Logger.getLogger(CampusDBContext.class.getName()).log(Level.SEVERE, null, ex);
