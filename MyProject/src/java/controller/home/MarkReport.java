@@ -6,8 +6,16 @@ package controller.home;
 
 import Dal.AccountDBContext;
 import Dal.CampusDBContext;
+import Dal.CourseDBContext;
+import Dal.EnrollMentDBContext;
+import Dal.SemesterDBContext;
+import Dal.StudentDBContext;
 import Entity.Account;
 import Entity.Campus;
+import Entity.Course;
+import Entity.Enrollment;
+import Entity.Semester;
+import Entity.Student;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -59,13 +67,36 @@ public class MarkReport extends BasedRequiredAuthenticationController {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response, Account LoggedUser) throws ServletException, IOException {
-        CampusDBContext cb = new CampusDBContext();
-        ArrayList<Campus> campus = cb.list();
+        CampusDBContext cpb = new CampusDBContext();
+        ArrayList<Campus> campus = cpb.list();
 
         AccountDBContext db = new AccountDBContext();
         ArrayList<Account> acc = db.list();
+
+        StudentDBContext sb = new StudentDBContext();
+        ArrayList<Student> student = sb.list();
+
+        //String studentId = request.getParameter("sid");
+        EnrollMentDBContext eb = new EnrollMentDBContext();
+        ArrayList<Enrollment> enroll = eb.listDistinctSemesters();
+        
+        EnrollMentDBContext edb = new EnrollMentDBContext();
+        ArrayList<Enrollment> enrolls = edb.listDistinctCourses();
+
+        SemesterDBContext seb = new SemesterDBContext();
+        ArrayList<Semester> semester = seb.list();
+
+        CourseDBContext cb = new CourseDBContext();
+        ArrayList<Course> course = cb.list();
+
+        request.setAttribute("course", course);
+        request.setAttribute("semester", semester);
+        request.setAttribute("enroll", enroll);
+        request.setAttribute("enrolls", enrolls);
+        request.setAttribute("student", student);
         request.setAttribute("campus", campus);
         request.setAttribute("acc", acc);
+
         request.getRequestDispatcher("view/mark.jsp").forward(request, response);
     }
 

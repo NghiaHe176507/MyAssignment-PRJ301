@@ -15,6 +15,15 @@ public class Account extends BaseEntity {
     private String displayname;
     private int pid;
     private int cid;
+    private Student student;
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
+    }
 
     public int getPid() {
         return pid;

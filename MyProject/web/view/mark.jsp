@@ -43,19 +43,60 @@
                 </div>
 
 
+                <span id="sid">Mã sinh viên: ${sessionScope.account.student.id}</span>
+                <input type="hidden" id="sid" name="sid" value="${sessionScope.account.student.id}">
+
+
+
+
+
                 <div class="row">
                     <div class="col-md-12 breadcrumb">
                         <div><span id="ctl00_lblNavigation"><a href="<%= request.getContextPath() %>/home">Home</a>&nbsp;|&nbsp;<b>Grade-book</b></span>
                         </div>
 
+
                         <div class="menu">
                             <a href="?view=user">
                                 <span id="ctl00_lblLogIn" class="label label-success">${sessionScope.account.displayname}</span></a> | 
-                                <a href="<%= request.getContextPath() %>/logout" class="label label-success">logout</a> |
+                            <a href="<%= request.getContextPath() %>/logout" class="label label-success">logout</a> |
                             <span id="ctl00_lblCampusName" class="label label-success">Campus: ${requestScope.campus[sessionScope.account.cid - 1].name}</span>
                         </div>
                     </div>
                 </div>
+
+                <div>
+                    <table>
+                        <tr>
+                            <th>Term</th>
+                            <th>Course</th>
+                        </tr>
+
+                        <c:forEach items="${requestScope.enroll}" var="e">
+                            <c:if test="${e.student.id eq sessionScope.account.student.id}">
+                                <tr>
+                                    <td>
+                                        <a href="#" value="${e.semester.id}">${requestScope.semester[e.semester.id].name}</a>
+                                    </td>
+                                </tr>
+                            </c:if>
+                        </c:forEach>
+
+                        <c:forEach items="${requestScope.enrolls}" var="enroll">
+                            <c:if test="${enroll.student.id eq sessionScope.account.student.id}">
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <a href="#" value="${enroll.course.id}">${enroll.course.name}</a>
+                                    </td>
+                                </tr>
+                            </c:if>
+                        </c:forEach>
+
+                    </table>
+                </div>
+
+
 
                 <div class="footer">
                     <div id="ctl00_divSupport" style="text-align: center">

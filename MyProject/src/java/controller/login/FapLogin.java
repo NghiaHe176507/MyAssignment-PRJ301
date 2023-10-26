@@ -10,6 +10,7 @@ import Dal.PositionDBContext;
 import Entity.Account;
 import Entity.Campus;
 import Entity.Position;
+import Entity.Student;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -104,6 +105,7 @@ public class FapLogin extends HttpServlet {
         param.setCid(cid);
 
         AccountDBContext db = new AccountDBContext();
+
         Account loggedUser = db.get(param);
 
         if (loggedUser == null) {
