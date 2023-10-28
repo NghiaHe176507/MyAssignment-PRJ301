@@ -5,15 +5,21 @@
 package controller.home;
 
 import Dal.AccountDBContext;
+import Dal.AssessmentDBContext;
 import Dal.CampusDBContext;
 import Dal.CourseDBContext;
 import Dal.EnrollMentDBContext;
+import Dal.GradeDBContext;
+import Dal.ScoreDBContext;
 import Dal.SemesterDBContext;
 import Dal.StudentDBContext;
 import Entity.Account;
+import Entity.Assessment;
 import Entity.Campus;
 import Entity.Course;
 import Entity.Enrollment;
+import Entity.Grade;
+import Entity.Score;
 import Entity.Semester;
 import Entity.Student;
 import java.io.IOException;
@@ -86,9 +92,21 @@ public class MarkReport extends BasedRequiredAuthenticationController {
         SemesterDBContext seb = new SemesterDBContext();
         ArrayList<Semester> semester = seb.list();
 
-        CourseDBContext cb = new CourseDBContext();
+        CourseDBContext cb = new CourseDBContext(); 
         ArrayList<Course> course = cb.list();
+        
+        ScoreDBContext scb =  new ScoreDBContext();
+        ArrayList<Score> scores = scb.listScore();
+        
+        GradeDBContext gb = new GradeDBContext();
+        ArrayList<Grade> grade = gb.list();
+        
+        AssessmentDBContext ab =  new AssessmentDBContext();
+        ArrayList<Assessment> assessment = ab.list();
 
+        request.setAttribute("assessment", assessment);
+        request.setAttribute("grade", grade);
+        request.setAttribute("scores", scores);
         request.setAttribute("course", course);
         request.setAttribute("semester", semester);
         request.setAttribute("enroll", enroll);
@@ -98,6 +116,7 @@ public class MarkReport extends BasedRequiredAuthenticationController {
         request.setAttribute("acc", acc);
 
         request.getRequestDispatcher("view/mark.jsp").forward(request, response);
+        
     }
 
     @Override
