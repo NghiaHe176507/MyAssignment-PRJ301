@@ -17,7 +17,7 @@
     </head>
 
     <body>
-        <form action="mark" method="POST">
+        <form action="mark" method="GET">
             <div class="container">
                 <div class="row content">
                     <div class="col-md-8">
@@ -43,7 +43,7 @@
                 </div>
 
 
-                <span id="sid">Mã sinh viên: ${sessionScope.account.student.id}</span>
+                <span id="sid">Mã sinh viên: ${requestScope.id}</span>
                 <input type="hidden" id="sid" name="sid" value="${sessionScope.account.student.id}">
 
                 <div class="row">
@@ -55,13 +55,42 @@
                         <div class="menu">
                             <a href="?view=user">
                                 <span id="ctl00_lblLogIn" class="label label-success">${sessionScope.account.displayname}</span></a> | 
-                            <a href="<%= request.getContextPath() %>/logout" class="label label-success">logout</a> |
+                            <a href="<%= request.getContextPath()%>/logout" class="label label-success">logout</a> |
                             <span id="ctl00_lblCampusName" class="label label-success">Campus: ${requestScope.campus[sessionScope.account.cid - 1].name}</span>
                         </div>
                     </div>
                 </div>
 
+
+
                 <div>
+                    <table>
+                        <tr>
+                            <th>Term</th>
+                            <th>Course</th>
+                        </tr>
+                        <c:forEach items="${requestScope.enroll}" var="e">
+                            <c:if test="${e.student.id eq sessionScope.account.student.id}">
+                                <tr>
+                                    <td>
+                                        <a href="<%= request.getContextPath()%>/mark?markID=${requestScope.semester[e.semester.id].name}" value="${e.semester.id}">${requestScope.semester[e.semester.id].name}</a>
+                                    </td>
+                                </tr>
+                            </c:if>
+                        </c:forEach>
+
+                        <c:forEach items="${requestScope.enrolls}" var="enroll">
+                            <c:if test="${enroll.student.id eq sessionScope.account.student.id}">
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <a href="#" value="${enroll.course.id}">${enroll.course.name}</a>
+                                    </td>
+                                </tr>
+                            </c:if>
+                        </c:forEach>
+                    </table>
+
                     <table>
                         <tr>
                             <!--                            <th>GRADE CATEGORY |</th>-->
@@ -230,7 +259,12 @@
 
             // Gọi hàm làm tròn sau khi tài liệu tải xong
             window.addEventListener('load', roundToOneDecimal);
+
+
         </script>
+
+
+
 
 
 

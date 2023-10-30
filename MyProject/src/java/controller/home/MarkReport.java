@@ -28,22 +28,16 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+//import org.apache.jasper.compiler.Node;
 
 /**
  *
  * @author Phạm Văn Nghĩa
  */
+
+
 public class MarkReport extends BasedRequiredAuthenticationController {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -61,18 +55,18 @@ public class MarkReport extends BasedRequiredAuthenticationController {
         }
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
 
+    
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response, Account LoggedUser) throws ServletException, IOException {
+
+        
+        
         CampusDBContext cpb = new CampusDBContext();
         ArrayList<Campus> campus = cpb.list();
 
@@ -85,23 +79,25 @@ public class MarkReport extends BasedRequiredAuthenticationController {
         //String studentId = request.getParameter("sid");
         EnrollMentDBContext eb = new EnrollMentDBContext();
         ArrayList<Enrollment> enroll = eb.listDistinctSemesters();
-        
+
+        String id = request.getParameter("markID");
+        request.setAttribute("id", id);
         EnrollMentDBContext edb = new EnrollMentDBContext();
-        ArrayList<Enrollment> enrolls = edb.listDistinctCourses();
+        ArrayList<Enrollment> enrolls = edb.listDistinctCoursesBySemester(id);
 
         SemesterDBContext seb = new SemesterDBContext();
         ArrayList<Semester> semester = seb.list();
 
-        CourseDBContext cb = new CourseDBContext(); 
+        CourseDBContext cb = new CourseDBContext();
         ArrayList<Course> course = cb.list();
-        
-        ScoreDBContext scb =  new ScoreDBContext();
+
+        ScoreDBContext scb = new ScoreDBContext();
         ArrayList<Score> scores = scb.listScore();
-        
+
         GradeDBContext gb = new GradeDBContext();
         ArrayList<Grade> grade = gb.list();
-        
-        AssessmentDBContext ab =  new AssessmentDBContext();
+
+        AssessmentDBContext ab = new AssessmentDBContext();
         ArrayList<Assessment> assessment = ab.list();
 
         request.setAttribute("assessment", assessment);
@@ -114,14 +110,22 @@ public class MarkReport extends BasedRequiredAuthenticationController {
         request.setAttribute("student", student);
         request.setAttribute("campus", campus);
         request.setAttribute("acc", acc);
-
-        request.getRequestDispatcher("view/mark.jsp").forward(request, response);
         
+        
+        //System.out.println(id);
+        request.getRequestDispatcher("view/mark.jsp").forward(request, response);
+
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response, Account LoggedUser) throws ServletException, IOException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+    
+//    @Override
+//    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//       int id = Integer.parseInt(req.getParameter("id"));
+//        System.out.println(id);
+//    }
 
 }

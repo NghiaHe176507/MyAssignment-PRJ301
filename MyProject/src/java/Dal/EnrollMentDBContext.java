@@ -201,5 +201,36 @@ public class EnrollMentDBContext extends DBContext<Enrollment> {
         return enrollments;
     }
 
-    
+    public ArrayList<Enrollment> listDistinctCoursesBySemester(String semesterName) {
+        ArrayList<Enrollment> enrollments = new ArrayList<>();
+        try {
+            String sql = "SELECT DISTINCT c.[CourseName], e.[StudentId], e.[CourseId]\n"
+                    + "  FROM [Enrollment] e\n"
+                    + "  INNER JOIN [Group] g ON e.[GroupId] = g.[GroupId]\n"
+                    + "  INNER JOIN [Semester] s ON e.[SemesterId] = s.[SemesterId]\n"
+                    + "  INNER JOIN [Course] c ON e.[CourseId] = c.[CourseId]\n"
+                    + "  INNER JOIN [Student] stu ON e.[StudentId] = stu.[StudentId]\n"
+                    + "  WHERE s.[SemesterName] = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, semesterName);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Enrollment e = new Enrollment();
+                Course course = new Course();
+                course.setName(rs.getString("CourseName"));
+                e.setCourse(course);
+                Student s = new Student();
+                s.setId(rs.getString("StudentId"));
+                e.setStudent(s);
+                Course courses = new Course();
+                courses.setId(rs.getString("CourseId"));
+                e.setCourse(course);
+                enrollments.add(e);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(EnrollMentDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return enrollments;
+    }
+
 }
