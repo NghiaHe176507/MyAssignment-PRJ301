@@ -34,8 +34,6 @@ import java.util.ArrayList;
  *
  * @author Phạm Văn Nghĩa
  */
-
-
 public class MarkReport extends BasedRequiredAuthenticationController {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -60,12 +58,11 @@ public class MarkReport extends BasedRequiredAuthenticationController {
         return "Short description";
     }// </editor-fold>
 
-    
-    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response, Account LoggedUser) throws ServletException, IOException {
 
-        
+        String termId = request.getParameter("termName");
+        request.setAttribute("term", termId);
         
         CampusDBContext cpb = new CampusDBContext();
         ArrayList<Campus> campus = cpb.list();
@@ -80,10 +77,14 @@ public class MarkReport extends BasedRequiredAuthenticationController {
         EnrollMentDBContext eb = new EnrollMentDBContext();
         ArrayList<Enrollment> enroll = eb.listDistinctSemesters();
 
-        String id = request.getParameter("markID");
-        request.setAttribute("id", id);
+        String sid = request.getParameter("termName");
+        request.setAttribute("id", sid);
+        
         EnrollMentDBContext edb = new EnrollMentDBContext();
-        ArrayList<Enrollment> enrolls = edb.listDistinctCoursesBySemester(id);
+        ArrayList<Enrollment> enrolls = edb.listDistinctCoursesBySemester(sid);
+
+        String cid = request.getParameter("courseId");
+        request.setAttribute("cid", cid);
 
         SemesterDBContext seb = new SemesterDBContext();
         ArrayList<Semester> semester = seb.list();
@@ -92,7 +93,7 @@ public class MarkReport extends BasedRequiredAuthenticationController {
         ArrayList<Course> course = cb.list();
 
         ScoreDBContext scb = new ScoreDBContext();
-        ArrayList<Score> scores = scb.listScore();
+        ArrayList<Score> scores = scb.listScore(cid);
 
         GradeDBContext gb = new GradeDBContext();
         ArrayList<Grade> grade = gb.list();
@@ -110,8 +111,7 @@ public class MarkReport extends BasedRequiredAuthenticationController {
         request.setAttribute("student", student);
         request.setAttribute("campus", campus);
         request.setAttribute("acc", acc);
-        
-        
+
         //System.out.println(id);
         request.getRequestDispatcher("view/mark.jsp").forward(request, response);
 
@@ -121,11 +121,5 @@ public class MarkReport extends BasedRequiredAuthenticationController {
     protected void doPost(HttpServletRequest request, HttpServletResponse response, Account LoggedUser) throws ServletException, IOException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
-//    @Override
-//    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//       int id = Integer.parseInt(req.getParameter("id"));
-//        System.out.println(id);
-//    }
 
 }

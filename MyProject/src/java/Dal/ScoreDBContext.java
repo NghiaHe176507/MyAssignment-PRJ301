@@ -84,7 +84,54 @@ public class ScoreDBContext extends DBContext<Score> {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
-    public ArrayList<Score> listScore() {
+    public ArrayList<Score> listScore(String courseID) {
+        ArrayList<Score> scores = new ArrayList<>();
+        try {
+            String sql = "SELECT S.[ScoreId], "
+                    + "A.[GradeId], "
+                    + "G.[GradeName], "
+                    + "E.[StudentId], "
+                    + "S.[AssessmentId], "
+                    + "S.[EnrollmentId], "
+                    + "A.[Weight], "
+                    + "S.[Score] "
+                    + "FROM [Score] S "
+                    + "INNER JOIN [Assessment] A ON S.[AssessmentId] = A.[AssessmentID] "
+                    + "INNER JOIN [Enrollment] E ON S.[EnrollmentId] = E.[EnrollmentId] "
+                    + "INNER JOIN [Grade] G ON A.[GradeId] = G.[GradeId] "
+                    + "WHERE E.[CourseId] = ?;";
+
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, courseID);
+            ResultSet rs = stm.executeQuery();
+
+            while (rs.next()) {
+                Score s = new Score();
+                s.setId(rs.getInt("ScoreId"));
+                Assessment a = new Assessment();
+                Grade g = new Grade();
+                g.setId(rs.getString("GradeId"));
+                g.setName(rs.getString("GradeName"));
+                a.setGrade(g);
+                a.setWeight(rs.getFloat("Weight"));
+                s.setAssessment(a);
+                Enrollment e = new Enrollment();
+                Student stu = new Student();
+                stu.setId(rs.getString("StudentId"));
+                e.setStudent(stu);
+                e.setId(rs.getInt("EnrollmentId"));
+                s.setEnrollment(e);
+                s.setScore(rs.getFloat("Score"));
+
+                scores.add(s);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ScoreDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return scores;
+    }
+
+    public ArrayList<Score> listScores() {
         ArrayList<Score> scores = new ArrayList<>();
         try {
             String sql = "SELECT S.[ScoreId], "
@@ -128,3 +175,4 @@ public class ScoreDBContext extends DBContext<Score> {
     }
 
 }
+
