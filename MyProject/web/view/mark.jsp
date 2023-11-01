@@ -3,33 +3,38 @@
     Created on : Oct 19, 2023, 12:47:05 AM
     Author     : Phạm Văn Nghĩa
 --%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-   <style>
-    table {
-        border-collapse: collapse;
-        width: 100%;
-    }
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
 
-    th, td {
-        border-bottom: 1px solid black;
-        padding: 8px;
-        text-align: left;
-    }
+        th, td {
+            border-bottom: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
 
-    th {
-        background-color: #f2f2f2;
-    }
+        .auto-style1{
+            border-bottom: none;
+            padding: 0px;
+            text-align: center;
+        }
 
-    tr:last-child td {
-        /* Loại bỏ border-bottom cho td trong hàng cuối cùng */
-        border-bottom: none;
-    }
-</style>
+        th {
+            background-color: #f2f2f2;
+        }
 
-
+        tr:last-child td {
+            /* Loại bỏ border-bottom cho td trong hàng cuối cùng */
+            border-bottom: none;
+        }
+    </style>
 
     <head>
         <title>Mark Report</title>
@@ -84,20 +89,6 @@
                     </div>
                 </div>
 
-
-                <div>
-                    <select name="termId" id="termSelect">
-                        <c:forEach items="${requestScope.enroll}" var="e">
-                            <c:if test="${e.student.id eq sessionScope.account.student.id}">
-                                <option value="${e.semester.id}">
-                                    ${requestScope.semester[e.semester.id].name}
-                                </option>
-                            </c:if>
-                        </c:forEach>
-                    </select>
-
-                </div>
-
                 <div>
                     <table style="width: 100%;">
                         <tr>
@@ -137,12 +128,14 @@
                                                                     <c:if test="${enrollStatus.index eq eStatus.index}">
                                                                         <tr>
                                                                             <td>
-                                                                                <a href="<%= request.getContextPath()%>/mark?termName=${requestScope.term}&courseId=${enroll.course.id}">${enroll.course.name}(${enroll.course.id})</a>
+                                                                                <a href="<%= request.getContextPath()%>/mark?termName=${requestScope.term}&courseId=${enroll.course.id}" id="courseLink" onclick="showCourseTable();">${enroll.course.name}(${enroll.course.id})</a>
+                                                                            </td>
                                                                         </tr>
                                                                     </c:if>
                                                                 </c:forEach>
                                                             </c:if>
                                                         </c:forEach>
+
 
                                                     </table>
                                                 </div>
@@ -154,7 +147,7 @@
                             </td>
 
                             <td style="width: 50%; vertical-align: top;">
-                                <table>
+                                <table id="courseTable">
                                     <thead>
                                         <tr>
                                             <th>GRADE ITEM</th>
@@ -184,10 +177,11 @@
                                                     <a>${s.assessment.grade.name}</a>
                                                 </td>
                                                 <td>
-                                                    <a>${s.assessment.grade.name == 'Total' ? 'Total' : s.assessment.weight}</a>
+                                                    <a>${s.assessment.grade.name == 'Total' ? 'Total' : s.assessment.weight}${s.assessment.grade.name == 'Total' ? '' : '%'}</a>
                                                 </td>
                                                 <td>
-                                                    <a>${s.score}</a>
+                                                    <a>${s.assessment.grade.name == 'Total' ? 
+                                                         (itemCount > 0 ? totalScore / itemCount : '') : s.score}</a>
                                                 </td>
                                                 <td><!-- Giá trị COMMENT ở đây --></td>
                                             </tr>
@@ -220,15 +214,17 @@
                                                     <!-- Hãy tiếp tục vòng lặp -->
                                                 </c:when>
                                                 <c:otherwise>
-                                                    <tr>
-                                                        <td>Total</td>
-                                                        <td>${totalWeight}</td>
-                                                        <!-- Đặt ID cho total scores -->
-                                                        <td>
-                                                            <span id="totalScoreValue">${itemCount > 0 ? totalScore / itemCount : ''}</span>
-                                                        </td>
-                                                        <td><!-- Giá trị COMMENT cho Total ở đây --></td>
-                                                    </tr>
+                                                    <c:if test="${s.assessment.grade.name != 'Final exam' && s.assessment.grade.name != 'Final exam Resit' && s.assessment.grade.name != 'Practical exam'}">
+                                                        <tr>
+                                                            <td>Total</td>
+                                                            <td>${totalWeight}%</td>
+                                                            <!-- Đặt ID cho total scores -->
+                                                            <td>
+                                                                <span id="totalScoreValue">${itemCount > 0 ? totalScore / itemCount : ''}</span>
+                                                            </td>
+                                                            <td><!-- Giá trị COMMENT cho Total ở đây --></td>
+                                                        </tr>
+                                                    </c:if>
                                                     <c:set var="totalWeight" value="0" /> <!-- Reset trọng số của Total -->
                                                     <c:set var="totalScore" value="0" /> <!-- Reset điểm của Total -->
                                                     <c:set var="itemCount" value="0" /> <!-- Reset số lượng mục -->
@@ -239,7 +235,7 @@
                                                 <!-- Hiển thị dòng "Total" cho "Final Exam" sau khi hoàn thành -->
                                                 <tr>
                                                     <td>Total</td>
-                                                    <td>${finalExamWeight}</td>
+                                                    <td>${finalExamWeight}%</td>
                                                     <td>${finalExamScore}</td>
                                                     <td><!-- Giá trị COMMENT cho Final Exam ở đây --></td>
                                                 </tr>
@@ -252,7 +248,7 @@
                                                 <!-- Hiển thị dòng "Total" cho "Practical Exam" sau khi hoàn thành -->
                                                 <tr>
                                                     <td>Total</td>
-                                                    <td>${practicalExamWeight}</td>
+                                                    <td>${practicalExamWeight}%</td>
                                                     <td>${practicalExamScore}</td>
                                                     <td><!-- Giá trị COMMENT cho Practical Exam ở đây --></td>
                                                 </tr>
@@ -261,11 +257,11 @@
                                                 <c:set var="practicalExamScore" value="0" /> <!-- Reset điểm của Practical Exam -->
                                             </c:if>
 
-                                            <c:if test="${isFinalExamResit && (s.assessment.grade.name != 'Final exam Resit' || loop.last)}">
+                                            <c:if test="${isFinalExamResit}">  <!--   && (s.assessment.grade.name != 'Final exam Resit' || loop.last)-->
                                                 <!-- Hiển thị dòng "Total" cho "Final Exam Resit" sau khi hoàn thành -->
                                                 <tr>
                                                     <td>Total</td>
-                                                    <td>${finalExamResitWeight}</td>
+                                                    <td>${finalExamResitWeight}%</td>
                                                     <td>${finalExamResitScore}</td>
                                                     <td><!-- Giá trị COMMENT cho Final Exam Resit ở đây --></td>
                                                 </tr>
@@ -275,9 +271,112 @@
                                             </c:if>
                                         </c:forEach>
                                     </tbody>
+
                                     <tfoot>
+                                        <tr>
+                                            <td>
+                                                AVERAGE
+                                            </td>
+                                            <td>
+                                                <c:set var="averageTotalScore" value="0" />
+                                                <c:set var="averageWeight" value="0" />
+                                                <c:set var="totalscore" value="0"/>
+                                                <c:set var="finalExamResitTotal" value="0"/>
+                                                <c:set var="finalExamTotal" value="0"/>
+                                                <c:set var="totalEachScore" value="0" />
+
+                                                <c:forEach items="${requestScope.scores}" var="s">
+                                                    <c:choose>
+                                                        <c:when test="${s.assessment.grade.name == 'Final exam Resit' && s.score != null}">
+                                                            <c:set var="finalExamResitTotalTemp" value="${finalExamResitTotalTemp + (s.score * (s.assessment.weight/100))}" />
+                                                        </c:when>
+
+                                                        <c:otherwise>
+                                                            <c:if  test="${s.assessment.grade.name == 'Final exam'}">
+                                                                <c:set var="finalExamTotal" value="${finalExamTotal + (s.score * (s.assessment.weight/100))}" />
+                                                            </c:if>
+
+                                                            <c:if test="${s.assessment.grade.name != 'Final exam resit'}">
+                                                                <c:set var="averageTotalScore" value="${averageTotalScore + s.score}" />
+                                                                <c:set var="averageWeight" value="${s.assessment.weight}" />
+                                                                <c:set var="totalscore" value="${totalscore + (s.score * (s.assessment.weight/100))}" />
+                                                            </c:if>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </c:forEach>
+
+
+                                                <!-- Gán giá trị cho finalExamResitTotal từ finalExamResitTotalTemp -->
+                                                <c:set var="finalExamResitTotal" value="${finalExamResitTotalTemp}" />
+
+                                                <!-- Tính tổng cho 'Final exam resit' và 'Final exam' ngoài vòng lặp -->
+                                                <c:if test="${finalExamResitTotal != 0}">
+                                                    <c:set var="totalscore" value="${totalscore + finalExamResitTotal - finalExamTotal}" />
+                                                </c:if>
+
+                                                <span id="totalscore">${totalscore}</span>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                STATUS
+                                            </td>
+                                            <td>
+                                                <c:set var="totalEachWeight" value="0" />
+                                                <c:set var="nullScoreCount" value="0" />
+                                                <c:set var="sameWeightAndZeroScore" value="true" />
+                                                <c:set var="totalEachScore" value="0" /> 
+                                                <c:set var="totalEachWeight" value="0" />
+
+                                                <c:forEach items="${requestScope.scores}" var="s" varStatus="loop">
+                                                    <c:if test="${s.assessment.grade.name != 'Final exam' && s.assessment.grade.name != 'Final exam Resit' && s.assessment.grade.name != 'Practical exam'}">
+                                                        <c:if test="${totalEachWeight == s.assessment.weight}">
+                                                            <!-- Nếu weight của mục hiện tại bằng weight của mục trước đó, cộng score của chúng lại -->
+                                                            <c:set var="totalEachScore" value="${totalEachScore + s.score}" />
+                                                        </c:if>
+                                                        <c:if test="${totalEachWeight != s.assessment.weight}">
+                                                            <!-- Nếu weight của mục hiện tại khác weight của mục trước đó, kiểm tra tổng score -->
+                                                            <c:if test="${totalEachScore == 0}">
+                                                                <c:set var="sameWeightAndZeroScore" value="false" />
+                                                            </c:if>
+                                                            <c:if test="${totalEachScore != 0}">
+                                                                <c:set var="sameWeightAndZeroScore" value="true" />
+                                                            </c:if>
+                                                            <!-- Reset tổng score và weight -->
+                                                            <c:set var="totalEachScore" value="0" />
+                                                            <c:set var="totalEachWeight" value="${s.assessment.weight}" />
+                                                        </c:if>
+                                                    </c:if>
+                                                </c:forEach>
+
+
+                                                <c:forEach items="${requestScope.scores}" var="s" varStatus="loop">
+                                                    <c:if test="${s.score == null}">
+                                                        <c:set var="nullScoreCount" value="${nullScoreCount + 1}" />
+                                                    </c:if>
+
+                                                </c:forEach>
+
+                                                <c:if test="${nullScoreCount > 3}">
+                                                    <c:set var="status" value="studying" />
+                                                </c:if>
+                                                <c:if test="${totalscore >= 5.0 && sameWeightAndZeroScore == true}">
+                                                    <c:set var="status" value="Passed" />
+                                                </c:if>
+                                                <c:if test="${totalscore < 5.0 || sameWeightAndZeroScore == false }">
+                                                    <c:set var="status" value="Not Passed" />
+                                                </c:if>
+
+                                                <span id="status">${status}</span>
+                                            </td>
+                                        </tr>
+
 
                                     </tfoot>
+
+
+
                                 </table>
                             </td>
                         </tr>
@@ -309,10 +408,11 @@
             </div>
         </form>
 
+
+        <!-- JavaScript để làm tròn giá trị sau dấu phẩy -->
         <script>
-            // Làm tròn điểm đến 1 chữ số sau dấu phẩy
             function roundToOneDecimal() {
-                var elements = document.querySelectorAll("#scoreValue, #totalScoreValue");
+                var elements = document.querySelectorAll("#totalScoreValue");
                 elements.forEach(function (element) {
                     var score = parseFloat(element.innerHTML);
                     if (!isNaN(score)) {
@@ -321,8 +421,21 @@
                 });
             }
 
+            // Gọi hàm làm tròn sau khi trang đã load xong
+            window.onload = roundToOneDecimal;
         </script>
 
+        <script>
+            // Lấy giá trị totalscore từ thẻ <span>
+            var totalscoreElement = document.getElementById('totalscore');
+            var totalscoreValue = parseFloat(totalscoreElement.textContent);
+
+            // Làm tròn totalscore đến 1 chữ số thập phân
+            var roundedTotalscore = totalscoreValue.toFixed(1);
+
+            // Cập nhật giá trị trong thẻ <span> với totalscore đã làm tròn
+            totalscoreElement.textContent = roundedTotalscore;
+        </script>
 
 
 
