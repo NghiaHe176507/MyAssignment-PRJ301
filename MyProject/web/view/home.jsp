@@ -65,7 +65,7 @@
                         <h2>Grade Transcript</h2>
                         <p>View average scores and course status for all subjects.</p>
                         <!-- Thêm nút bấm cho Grade Transcript -->
-                        <a href="link-to-grade-transcript" class="btn btn-grade">View Grade Transcript</a>
+                        <a href="<%= request.getContextPath() %>/transcript" class="btn btn-grade">View Grade Transcript</a>
                     </div>
                 </div>
 

@@ -12,7 +12,7 @@ public class Score extends BaseEntity {
 
     private int id;
     private Assessment assessment;
-    private float score;
+    private Float score;
     private Enrollment enrollment;
 
     public int getId() {
@@ -31,11 +31,11 @@ public class Score extends BaseEntity {
         this.assessment = assessment;
     }
 
-    public float getScore() {
+    public Float getScore() {
         return score;
     }
 
-    public void setScore(float score) {
+    public void setScore(Float score) {
         this.score = score;
     }
 

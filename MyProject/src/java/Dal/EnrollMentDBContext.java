@@ -59,9 +59,11 @@ public class EnrollMentDBContext extends DBContext<Enrollment> {
                 e.setGroup(g);
                 Semester se = new Semester();
                 se.setId(rs.getInt("SemesterId"));
+                se.setName(rs.getString("SemesterName"));
                 e.setSemester(se);
                 Course c = new Course();
                 c.setId(rs.getString("CourseId"));
+                c.setName(rs.getString("CourseName"));
                 e.setCourse(c);
                 e.setStartdate(rs.getDate("EnrollStartDate"));
                 e.setEnddate(rs.getDate("EnrollEndDate"));
@@ -171,11 +173,10 @@ public class EnrollMentDBContext extends DBContext<Enrollment> {
         return enrollments;
     }
 
-
     public ArrayList<Enrollment> listDistinctCoursesBySemester(String semesterName) {
         ArrayList<Enrollment> enrollments = new ArrayList<>();
         try {
-            String sql = "SELECT DISTINCT c.[CourseName], e.[StudentId], e.[CourseId]\n"
+            String sql = "SELECT DISTINCT c.[CourseName], e.[StudentId], e.[CourseId], e.[EnrollStartDate], e.[EnrollEndDate]\n"
                     + "  FROM [Enrollment] e\n"
                     + "  INNER JOIN [Group] g ON e.[GroupId] = g.[GroupId]\n"
                     + "  INNER JOIN [Semester] s ON e.[SemesterId] = s.[SemesterId]\n"
@@ -193,8 +194,9 @@ public class EnrollMentDBContext extends DBContext<Enrollment> {
                 e.setCourse(course);
                 Student s = new Student();
                 s.setId(rs.getString("StudentId"));
-                e.setStudent(s);           
-                e.setCourse(course);
+                e.setStudent(s);
+                e.setStartdate(rs.getDate("EnrollStartDate"));
+                e.setEnddate(rs.getDate("EnrollEndDate"));
                 enrollments.add(e);
             }
         } catch (SQLException ex) {
@@ -202,37 +204,42 @@ public class EnrollMentDBContext extends DBContext<Enrollment> {
         }
         return enrollments;
     }
-    
-    public ArrayList<Enrollment> listDistinctCoursesBySemester(int semesterId) {
-    ArrayList<Enrollment> enrollments = new ArrayList<>();
-    try {
-        String sql = "SELECT DISTINCT c.[CourseName], e.[StudentId], e.[CourseId]\n"
-                + "  FROM [Enrollment] e\n"
-                + "  INNER JOIN [Group] g ON e.[GroupId] = g.[GroupId]\n"
-                + "  INNER JOIN [Semester] s ON e.[SemesterId] = s.[SemesterId]\n"
-                + "  INNER JOIN [Course] c ON e.[CourseId] = c.[CourseId]\n"
-                + "  INNER JOIN [Student] stu ON e.[StudentId] = stu.[StudentId]\n"
-                + "  WHERE s.[SemesterId] = ?";
-        PreparedStatement stm = connection.prepareStatement(sql);
-        stm.setInt(1, semesterId);
-        ResultSet rs = stm.executeQuery();
-        while (rs.next()) {
-            Enrollment e = new Enrollment();
-            Course course = new Course();
-            course.setName(rs.getString("CourseName"));
-            course.setId(rs.getString("CourseId"));
-            e.setCourse(course);
-            Student s = new Student();
-            s.setId(rs.getString("StudentId"));
-            e.setStudent(s);
-            e.setCourse(course);
-            enrollments.add(e);
-        }
-    } catch (SQLException ex) {
-        Logger.getLogger(EnrollMentDBContext.class.getName()).log(Level.SEVERE, null, ex);
-    }
-    return enrollments;
-}
 
+    public ArrayList<Enrollment> getEnrollmentInfo() {
+        ArrayList<Enrollment> enrollmentInfoList = new ArrayList<>();
+        try {
+            String sql = "SELECT E.[SemesterId], S.[SemesterName], E.[CourseId], C.[CourseName], E.[EnrollmentId]\n"
+                    + "FROM [Enrollment] E\n"
+                    + "INNER JOIN [Semester] S ON E.[SemesterId] = S.[SemesterId]\n"
+                    + "INNER JOIN [Course] C ON E.[CourseId] = C.[CourseId]\n"
+                    + "INNER JOIN [Student] St ON E.[StudentId] = St.[StudentId]";
+
+            PreparedStatement stm = connection.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Enrollment e = new Enrollment();
+                e.setId(rs.getInt("EnrollmentId"));
+
+                Semester s = new Semester();
+                s.setId(rs.getInt("SemesterId"));
+                s.setName(rs.getString("SemesterName"));
+                e.setSemester(s);
+
+                Course c = new Course();
+                c.setId(rs.getString("CourseId"));
+                c.setName(rs.getString("CourseName"));
+                e.setCourse(c);
+
+                Student stu = new Student();
+                stu.setId(rs.getString("StudentId"));
+                e.setStudent(stu);
+
+                enrollmentInfoList.add(e);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(EnrollMentDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return enrollmentInfoList;
+    }
 
 }

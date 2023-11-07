@@ -8,40 +8,61 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
-
-        th, td {
-            border-bottom: 1px solid black;
-            padding: 8px;
-            text-align: left;
-        }
-
-        .auto-style1{
-            border-bottom: none;
-            padding: 0px;
-            text-align: center;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-
-        tr:last-child td {
-            /* Loại bỏ border-bottom cho td trong hàng cuối cùng */
-            border-bottom: none;
-        }
-    </style>
-
     <head>
         <title>Mark Report</title>
         <meta charset="utf-8">
 
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="css/mark.css">
+
+        <style>
+
+            table {
+                border-collapse: collapse;
+                width: 100%;
+            }
+
+            th {
+                border-bottom: 1px solid black;
+                border-right: 1px solid white;
+                padding: 8px;
+                text-align: left;
+            }
+
+            td{
+                border-bottom: 0.5px solid whitesmoke;
+                padding: 8px;
+                text-align: left;
+            }
+
+            tfoot{
+                border-top: 2.5px solid whitesmoke;
+            }
+
+            .auto-style1{
+                border-bottom: none;
+                padding: 0px;
+                text-align: center;
+            }
+
+            th {
+                background-color: #f2f2f2;
+            }
+
+            tr:last-child td {
+                /* Loại bỏ border-bottom cho td trong hàng cuối cùng */
+                border-bottom: none;
+            }
+            .grade-report-heading{
+                font-family: inherit;
+                font-weight: 500;
+                line-height: 1.1;
+                color: inherit;
+                margin: 20px 0;
+                padding: 20px ;
+                font-size: 30px;
+            }
+        </style>
     </head>
 
     <body>
@@ -70,8 +91,6 @@
                     </div>
                 </div>
 
-
-                <span id="sid">Mã sinh viên: ${requestScope.cid}</span>
                 <input type="hidden" id="sid" name="sid" value="${sessionScope.account.student.id}">
 
                 <div class="row">
@@ -89,467 +108,548 @@
                     </div>
                 </div>
 
-                <div>
-                    <table style="width: 100%;">
-                        <tr>
-                            <td style="width: 50%; vertical-align: top;">
-                                <h3>Select a term, course ...</h3>
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Term</th>
-                                            <th>Course</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <div>
-                                                    <table>
-                                                        <c:forEach items="${requestScope.enroll}" var="e">
-                                                            <c:if test="${e.student.id eq sessionScope.account.student.id}">
-                                                                <tr>
-                                                                    <td>
-                                                                        <a href="<%= request.getContextPath()%>/mark?termName=${requestScope.semester[e.semester.id].name}" value="${e.semester.id}">${requestScope.semester[e.semester.id].name}</a>
-                                                                    </td>
-                                                                </tr>
-                                                            </c:if>
-                                                        </c:forEach> 
-                                                    </table>
-                                                </div>
-                                            </td>
+                <h3 class="grade-report-heading">Grade report for ${sessionScope.account.displayname} (${sessionScope.account.student.id})</h3>
 
-                                            <td>
-                                                <div>
-                                                    <table>
-                                                        <c:forEach items="${requestScope.enrolls}" var="enroll" varStatus="enrollStatus">
-                                                            <c:if test="${enroll.student.id eq sessionScope.account.student.id}">
-                                                                <c:forEach items="${requestScope.enroll}" var="e" varStatus="eStatus">
-                                                                    <c:if test="${enrollStatus.index eq eStatus.index}">
-                                                                        <tr>
-                                                                            <td>
-                                                                                <a href="<%= request.getContextPath()%>/mark?termName=${requestScope.term}&courseId=${enroll.course.id}" id="courseLink" onclick="showCourseTable();">${enroll.course.name}(${enroll.course.id})</a>
-                                                                            </td>
-                                                                        </tr>
-                                                                    </c:if>
-                                                                </c:forEach>
-                                                            </c:if>
-                                                        </c:forEach>
+                <div style="display: flex;">
+                    <div style="width: 50%; vertical-align: top;"> 
 
 
-                                                    </table>
-                                                </div>
-                                            </td>
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </td>
-
-                            <td style="width: 50%; vertical-align: top;">
-                                <table id="courseTable">
-                                    <thead>
-                                        <tr>
-                                            <th>GRADE ITEM</th>
-                                            <th>WEIGHT</th>
-                                            <th>VALUE</th>
-                                            <th>COMMENT</th>
-
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <c:set var="totalWeight" value="0" />
-                                        <c:set var="totalScore" value="0" />
-                                        <c:set var="finalExamWeight" value="0" />
-                                        <c:set var="finalExamScore" value="0" />
-                                        <c:set var="practicalExamWeight" value="0" />
-                                        <c:set var="practicalExamScore" value="0" />
-                                        <c:set var="finalExamResitWeight" value="0" />
-                                        <c:set var="finalExamResitScore" value="0" />
-                                        <c:set var="isFinalExam" value="false" />
-                                        <c:set var="isPracticalExam" value="false" />
-                                        <c:set var="isFinalExamResit" value="false" />
-                                        <c:set var="itemCount" value="0" />
-
-                                        <c:forEach items="${requestScope.scores}" var="s" varStatus="loop">
-                                            <tr>
-                                                <td>
-                                                    <a>${s.assessment.grade.name}</a>
-                                                </td>
-                                                <td>
-                                                    <a>${s.assessment.grade.name == 'Total' ? 'Total' : s.assessment.weight}${s.assessment.grade.name == 'Total' ? '' : '%'}</a>
-                                                </td>
-                                                <td>
-                                                    <a>${s.assessment.grade.name == 'Total' ? 
-                                                         (itemCount > 0 ? totalScore / itemCount : '') : s.score}</a>
-                                                </td>
-                                                <td><!-- Giá trị COMMENT ở đây --></td>
-                                            </tr>
-
-                                            <c:choose>
-                                                <c:when test="${s.assessment.grade.name == 'Final exam'}">
-                                                    <c:set var="finalExamWeight" value="${finalExamWeight + s.assessment.weight}" />
-                                                    <c:set var="finalExamScore" value="${finalExamScore + s.score}" />
-                                                    <c:set var="isFinalExam" value="true" />
-                                                </c:when>
-                                                <c:when test="${s.assessment.grade.name == 'Practical exam'}">
-                                                    <c:set var="practicalExamWeight" value="${practicalExamWeight + s.assessment.weight}" />
-                                                    <c:set var="practicalExamScore" value="${practicalExamScore + s.score}" />
-                                                    <c:set var="isPracticalExam" value="true" />
-                                                </c:when>
-                                                <c:when test="${s.assessment.grade.name == 'Final exam Resit'}">
-                                                    <c:set var="finalExamResitWeight" value="${finalExamResitWeight + s.assessment.weight}" />
-                                                    <c:set var="finalExamResitScore" value="${finalExamResitScore + s.score}" />
-                                                    <c:set var="isFinalExamResit" value="true" />
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <c:set var="totalWeight" value="${totalWeight + s.assessment.weight}" />
-                                                    <c:set var="totalScore" value="${totalScore + s.score}" />
-                                                    <c:set var="itemCount" value="${itemCount + 1}" />
-                                                </c:otherwise>
-                                            </c:choose>
-
-                                            <c:choose>
-                                                <c:when test="${!loop.last && s.assessment.weight == requestScope.scores[loop.index + 1].assessment.weight 
-                                                            && s.assessment.grade.name.replaceAll('[0-9]', '') == requestScope.scores[loop.index + 1].assessment.grade.name.replaceAll('[0-9]', '')}">
-                                                        <!-- Hãy tiếp tục vòng lặp -->
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <c:if test="${s.assessment.grade.name != 'Final exam' && s.assessment.grade.name != 'Final exam Resit' && s.assessment.grade.name != 'Practical exam'}">
+                        <h3>Select a term, course ...</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Term</th>
+                                    <th>Course</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div>
+                                            <table>
+                                                <c:forEach items="${requestScope.enroll}" var="e">
+                                                    <c:if test="${e.student.id eq sessionScope.account.student.id}">
                                                         <tr>
-                                                            <td>Total</td>
-                                                            <td id="totalWeightValue">${totalWeight > 10.0 && totalWeight < 11.0 ? '10.0' : totalWeight}%</td>
-                                                            <!-- Đặt ID cho total scores -->
                                                             <td>
-                                                                <span id="totalScoreValue">${itemCount > 0 ? totalScore / itemCount : ''}</span>
+                                                                <a href="<%= request.getContextPath()%>/mark?termName=${requestScope.semester[e.semester.id].name}" data-value="${e.semester.id}">
+                                                                    ${requestScope.semester[e.semester.id].name}
+                                                                </a>
                                                             </td>
-                                                            <td><!-- Giá trị COMMENT cho Total ở đây --></td>
                                                         </tr>
                                                     </c:if>
-                                                    <c:set var="totalWeight" value="0" /> 
-                                                    <c:set var="totalScore" value="0" /> 
-                                                    <c:set var="itemCount" value="0" /> 
+                                                </c:forEach> 
+                                            </table>
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div>
+                                            <table>
+                                                <c:forEach items="${requestScope.enrolls}" var="enroll" varStatus="enrollStatus">
+                                                    <c:if test="${enroll.student.id eq sessionScope.account.student.id}">
+
+                                                        <tr>
+                                                            <td>
+                                                                <a href="<%= request.getContextPath()%>/mark?termName=${requestScope.term}&courseId=${enroll.course.id}" id="courseLink" onclick="showCourseTable();">${enroll.course.name}(${enroll.course.id})</a>
+                                                            </td>
+                                                        </tr>
+
+                                                    </c:if>
+                                                </c:forEach>
+
+
+                                            </table>
+                                        </div>
+                                    </td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+
+
+                    <table id="courseTable" style="width: 50%; vertical-align: top;">
+                        <thead>
+                            <tr>
+                                <th>GRADE ITEM</th>
+                                <th>WEIGHT</th>
+                                <th>VALUE</th>
+                                <th>COMMENT</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:set var="totalWeight" value="0" />
+                            <c:set var="totalScore" value="0.0" />
+                            <c:set var="finalExamWeight" value="0" />
+                            <c:set var="finalExamScore" value="0.0" />
+                            <c:set var="practicalExamWeight" value="0" />
+                            <c:set var="practicalExamScore" value="0.0" />
+                            <c:set var="finalExamResitWeight" value="0" />
+                            <c:set var="finalExamResitScore" value="0.0" />
+                            <c:set var="isFinalExam" value="false" />
+                            <c:set var="isPracticalExam" value="false" />
+                            <c:set var="isFinalExamResit" value="false" />
+                            <c:set var="itemCount" value="0" />
+
+                            <c:forEach items="${requestScope.scores}" var="s" varStatus="loop">
+                                <c:if test="${s.enrollment.student.id eq sessionScope.account.student.id}">
+                                    <tr>
+                                        <td>
+                                            <a>${s.assessment.grade.name}</a>
+                                        </td>
+                                        <td>
+                                            <a>${s.assessment.grade.name == 'Total' ? 'Total' : s.assessment.weight}${s.assessment.grade.name == 'Total' ? '' : '%'}</a>
+                                        </td>
+                                        <td>
+                                            <a>${s.assessment.grade.name == 'Total' ? 
+                                                 (itemCount > 0 ? totalScore / itemCount : '') : s.score}</a>
+                                        </td>
+                                        <td><!-- Giá trị COMMENT ở đây --></td>
+                                    </tr>
+
+                                    <c:choose>
+                                        <c:when test="${s.assessment.grade.name == 'Final exam'}">
+                                            <c:set var="finalExamWeight" value="${finalExamWeight + s.assessment.weight}" />
+                                            <c:set var="finalExamScore" value="${finalExamScore + s.score}" />
+                                            <c:set var="isFinalExam" value="true" />
+                                        </c:when>
+                                        <c:when test="${s.assessment.grade.name == 'Practical exam'}">
+                                            <c:set var="practicalExamWeight" value="${practicalExamWeight + s.assessment.weight}" />
+                                            <c:set var="practicalExamScore" value="${practicalExamScore + s.score}" />
+                                            <c:set var="isPracticalExam" value="true" />
+                                        </c:when>
+                                        <c:when test="${s.assessment.grade.name == 'Final exam Resit'}">
+                                            <c:set var="finalExamResitWeight" value="${finalExamResitWeight + s.assessment.weight}" />
+                                            <c:set var="finalExamResitScore" value="${finalExamResitScore + s.score}" />
+                                            <c:set var="isFinalExamResit" value="true" />
+                                        </c:when>
+                                        <c:otherwise>
+                                            <c:set var="totalWeight" value="${totalWeight + s.assessment.weight}" />
+                                            <c:set var="totalScore" value="${totalScore + s.score}" />
+                                            <c:set var="itemCount" value="${itemCount + 1}" />
+                                        </c:otherwise>
+                                    </c:choose>
+
+                                    <c:choose>
+                                        <c:when test="${!loop.last && s.assessment.weight == requestScope.scores[loop.index + 1].assessment.weight 
+                                                        && s.assessment.grade.name.replaceAll('[0-9]', '') == requestScope.scores[loop.index + 1].assessment.grade.name.replaceAll('[0-9]', '')}">
+                                                <!-- Hãy tiếp tục vòng lặp -->
+                                        </c:when>
+                                        <c:otherwise>
+                                            <c:if test="${s.assessment.grade.name != 'Final exam' && s.assessment.grade.name != 'Final exam Resit' && s.assessment.grade.name != 'Practical exam'}">
+                                                <tr>
+                                                    <td>Total</td>
+                                                    <td id="totalWeightValue">${totalWeight > 10.0 && totalWeight < 11.0 ? '10.0' : totalWeight}%</td>
+                                                    <!-- Đặt ID cho total scores -->
+                                                    <td>
+                                                        <span id="totalScoreValue">${itemCount > 0 ? totalScore / itemCount : ''}</span>
+                                                    </td>
+                                                    <td><!-- Giá trị COMMENT cho Total ở đây --></td>
+                                                </tr>
+                                            </c:if>
+                                            <c:set var="totalWeight" value="0" /> 
+                                            <c:set var="totalScore" value="0.0" /> 
+                                            <c:set var="itemCount" value="0" /> 
+                                        </c:otherwise>
+                                    </c:choose>
+
+                                    <c:if test="${isFinalExam}">
+
+                                        <tr>
+                                            <td>Total</td>
+                                            <td>${finalExamWeight}%</td>
+                                            <td>${finalExamScore}</td>
+                                            <td><!-- Giá trị COMMENT cho Final Exam ở đây --></td>
+                                        </tr>
+                                        <c:set var="isFinalExam" value="false" />
+                                        <c:set var="finalExamWeight" value="0.0" /> 
+                                        <c:set var="finalExamScore" value="0.0" /> 
+                                    </c:if>
+
+                                    <c:if test="${isPracticalExam}">
+
+                                        <tr>
+                                            <td>Total</td>
+                                            <td>${practicalExamWeight}%</td>
+                                            <td>${practicalExamScore}</td>
+                                            <td><!-- Giá trị COMMENT cho Practical Exam ở đây --></td>
+                                        </tr>
+                                        <c:set var="isPracticalExam" value="false" />
+                                        <c:set var="practicalExamWeight" value="0.0" /> 
+                                        <c:set var="practicalExamScore" value="0.0" /> 
+                                    </c:if>
+
+                                    <c:if test="${isFinalExamResit}">  <!--   && (s.assessment.grade.name != 'Final exam Resit' || loop.last)-->
+
+                                        <tr>
+                                            <td>Total</td>
+                                            <td>${finalExamResitWeight}%</td>
+                                            <td>${finalExamResitScore}</td>
+                                            <td><!-- Giá trị COMMENT cho Final Exam Resit ở đây --></td>
+                                        </tr>
+                                        <c:set var="isFinalExamResit" value="false" />
+                                        <c:set var="finalExamResitWeight" value="0.0" /> 
+                                        <c:set var="finalExamResitScore" value="0.0" /> 
+                                    </c:if>
+                                </c:if>
+                            </c:forEach>
+                        </tbody>
+
+                        <tfoot>
+                            <tr>
+                                <td>
+                                    AVERAGE
+                                </td>
+                                <td>
+                                    <c:set var="averageTotalScore" value="0" />
+                                    <c:set var="averageWeight" value="0" />
+                                    <c:set var="totalscore" value="0"/>
+                                    <c:set var="totalEachScore" value="0" />
+
+                                    <c:set var="finalExamResitTotal" value="0"/>
+                                    <c:set var="finalExamTotal" value="0"/>
+                                    <c:set var="finalStatus" value ="fasle"/>
+
+
+                                    <c:set var="practialExamTotal" value="0"/>
+                                    <c:set var="practialExamResitTotal" value="0"/>
+                                    <c:set var="practicalStatus" value ="fasle"/>
+
+
+
+                                    <c:set var="theoryExamTotal" value="0"/>
+                                    <c:set var="theoryExamResitTotal" value="0"/>
+                                    <c:set var="theoryStatus" value ="fasle"/>
+
+                                    <c:set var="listenExamTotal" value="0"/>
+                                    <c:set var="listenExamResitTotal" value="0"/>
+                                    <c:set var="listenStatus" value ="fasle"/>
+
+                                    <c:set var="gvrExamTotal" value="0"/>
+                                    <c:set var="gvrExamResitTotal" value="0"/>
+                                    <c:set var="gvrStatus" value ="fasle"/>
+
+                                    <c:set var="finalExamResitTotalTemp" value="0"/>
+                                    <c:set var="practialExamResitTotalTemp" value="0"/>
+                                    <c:set var="theoryExamResitTotalTemp" value="0"/>
+                                    <c:set var="listenExamResitTotalTemp" value="0"/>
+                                    <c:set var="gvrExamResitTotalTemp" value="0"/>
+
+                                    <c:forEach items="${requestScope.scores}" var="s">
+                                        <c:if test="${s.enrollment.student.id eq sessionScope.account.student.id}">
+                                            <c:choose>
+                                                <c:when test="${s.assessment.grade.name == 'Final exam Resit' && s.score != null}">
+                                                    <c:set var="finalExamResitTotalTemp" value="${finalExamResitTotalTemp + (s.score * (s.assessment.weight/100))}" />
+                                                </c:when>
+
+                                                <c:when test="${s.assessment.grade.name == 'Theory exam resit' && s.score != null}">
+                                                    <c:set var="theoryExamResitTotalTemp" value="${theoryExamResitTotalTemp + (s.score * (s.assessment.weight/100))}" />
+                                                </c:when>
+
+                                                <c:when test="${s.assessment.grade.name == 'Practical exam Resit' && s.score != null}">
+                                                    <c:set var="practialExamResitTotalTemp" value="${practialExamResitTotalTemp + (s.score * (s.assessment.weight/100))}" />
+                                                </c:when>
+
+                                                <c:when test="${s.assessment.grade.name == 'FE: Listening Resit' && s.score != null}">
+                                                    <c:set var="listenExamResitTotalTemp" value="${listenExamResitTotalTemp + (s.score * (s.assessment.weight/100))}" />
+                                                </c:when>
+
+                                                <c:when test="${s.assessment.grade.name == 'FE: GVR Resit' && s.score != null}">
+                                                    <c:set var="gvrExamResitTotalTemp" value="${gvrExamResitTotalTemp + (s.score * (s.assessment.weight/100))}" />
+                                                </c:when>
+
+                                                <c:otherwise>
+                                                    <c:if  test="${s.assessment.grade.name == 'Final exam'}">
+                                                        <c:set var="finalExamTotal" value="${finalExamTotal + (s.score * (s.assessment.weight/100))}" />
+                                                        <c:set var="finalStatus" value ="true"/>
+                                                    </c:if>
+
+                                                    <c:if  test="${s.assessment.grade.name == 'Theory exam'}">
+                                                        <c:set var="theoryExamTotal" value="${theoryExamTotal + (s.score * (s.assessment.weight/100))}" />
+                                                        <c:set var="theoryStatus" value ="true"/>
+                                                    </c:if>
+
+                                                    <c:if  test="${s.assessment.grade.name == 'Practical exam'}">
+                                                        <c:set var="practialExamTotal" value="${practialExamTotal + (s.score * (s.assessment.weight/100))}" />
+                                                        <c:set var="practicalStatus" value ="true"/>
+                                                    </c:if>
+
+                                                    <c:if  test="${s.assessment.grade.name == 'FE: Listening'}">
+                                                        <c:set var="listenExamTotal" value="${listenExamTotal + (s.score * (s.assessment.weight/100))}" />
+                                                        <c:set var="listenStatus" value ="true"/>
+                                                    </c:if>
+
+                                                    <c:if  test="${s.assessment.grade.name == 'FE: GVR'}">
+                                                        <c:set var="gvrExamTotal" value="${gvrExamTotal + (s.score * (s.assessment.weight/100))}" />
+                                                        <c:set var="gvrStatus" value ="true"/>
+                                                    </c:if>
+
+                                                    <c:if test="${s.assessment.grade.name != 'Final exam resit' && s.assessment.grade.name != 'Theory exam resit' && s.assessment.grade.name != 'Practical exam Resit'}">
+                                                        <c:set var="averageTotalScore" value="${averageTotalScore + s.score}" />
+                                                        <c:set var="averageWeight" value="${s.assessment.weight}" />
+                                                        <c:set var="totalscore" value="${totalscore + (s.score * (s.assessment.weight/100))}" />
+                                                    </c:if>
                                                 </c:otherwise>
                                             </c:choose>
-
-                                            <c:if test="${isFinalExam}">
-                                                
-                                                <tr>
-                                                    <td>Total</td>
-                                                    <td>${finalExamWeight}%</td>
-                                                    <td>${finalExamScore}</td>
-                                                    <td><!-- Giá trị COMMENT cho Final Exam ở đây --></td>
-                                                </tr>
-                                                <c:set var="isFinalExam" value="false" />
-                                                <c:set var="finalExamWeight" value="0" /> 
-                                                <c:set var="finalExamScore" value="0" /> 
-                                            </c:if>
-
-                                            <c:if test="${isPracticalExam}">
-                                               
-                                                <tr>
-                                                    <td>Total</td>
-                                                    <td>${practicalExamWeight}%</td>
-                                                    <td>${practicalExamScore}</td>
-                                                    <td><!-- Giá trị COMMENT cho Practical Exam ở đây --></td>
-                                                </tr>
-                                                <c:set var="isPracticalExam" value="false" />
-                                                <c:set var="practicalExamWeight" value="0" /> 
-                                                <c:set var="practicalExamScore" value="0" /> 
-                                            </c:if>
-
-                                            <c:if test="${isFinalExamResit}">  <!--   && (s.assessment.grade.name != 'Final exam Resit' || loop.last)-->
-                                                
-                                                <tr>
-                                                    <td>Total</td>
-                                                    <td>${finalExamResitWeight}%</td>
-                                                    <td>${finalExamResitScore}</td>
-                                                    <td><!-- Giá trị COMMENT cho Final Exam Resit ở đây --></td>
-                                                </tr>
-                                                <c:set var="isFinalExamResit" value="false" />
-                                                <c:set var="finalExamResitWeight" value="0" /> 
-                                                <c:set var="finalExamResitScore" value="0" /> 
-                                            </c:if>
-                                        </c:forEach>
-                                    </tbody>
-
-                                    <tfoot>
-                                        <tr>
-                                            <td>
-                                                AVERAGE
-                                            </td>
-                                            <td>
-                                                <c:set var="averageTotalScore" value="0" />
-                                                <c:set var="averageWeight" value="0" />
-                                                <c:set var="totalscore" value="0"/>
-                                                <c:set var="finalExamResitTotal" value="0"/>
-                                                <c:set var="finalExamTotal" value="0"/>
-                                                <c:set var="totalEachScore" value="0" />
-                                                <c:set var="practialExamTotal" value="0"/>
-                                                <c:set var="practialExamResitTotal" value="0"/>
-                                                <c:set var="theoryExamTotal" value="0"/>
-                                                <c:set var="theoryExamResitTotal" value="0"/>
-                                                <c:set var="practialExamTotalTemp" value="0"/>
-
-                                                <c:forEach items="${requestScope.scores}" var="s">
-                                                    <c:choose>
-                                                        <c:when test="${s.assessment.grade.name == 'Final exam Resit' && s.score != null}">
-                                                            <c:set var="finalExamResitTotalTemp" value="${finalExamResitTotalTemp + (s.score * (s.assessment.weight/100))}" />
-                                                        </c:when>
-
-                                                        <c:when test="${s.assessment.grade.name == 'Theory exam resit' && s.score != null}">
-                                                            <c:set var="theoryExamResitTotalTemp" value="${theoryExamResitTotalTemp + (s.score * (s.assessment.weight/100))}" />
-                                                        </c:when>
-
-                                                        <c:when test="${s.assessment.grade.name == 'Practical exam Resit' && s.score != null}">
-                                                            <c:set var="practialExamResitTotalTemp" value="${practialExamResitTotalTemp + (s.score * (s.assessment.weight/100))}" />
-                                                        </c:when>
-
-                                                        <c:otherwise>
-                                                            <c:if  test="${s.assessment.grade.name == 'Final exam'}">
-                                                                <c:set var="finalExamTotal" value="${finalExamTotal + (s.score * (s.assessment.weight/100))}" />
-                                                            </c:if>
-
-                                                            <c:if  test="${s.assessment.grade.name == 'Theory exam'}">
-                                                                <c:set var="theoryExamTotal" value="${theoryExamTotal + (s.score * (s.assessment.weight/100))}" />
-                                                            </c:if>
-
-                                                            <c:if  test="${s.assessment.grade.name == 'Practical exam'}">
-                                                                <c:set var="practialExamTotal" value="${practialExamTotal + (s.score * (s.assessment.weight/100))}" />
-                                                            </c:if>
-
-                                                            <c:if test="${s.assessment.grade.name != 'Final exam resit' && s.assessment.grade.name != 'Theory exam resit' && s.assessment.grade.name != 'Practical exam Resit'}">
-                                                                <c:set var="averageTotalScore" value="${averageTotalScore + s.score}" />
-                                                                <c:set var="averageWeight" value="${s.assessment.weight}" />
-                                                                <c:set var="totalscore" value="${totalscore + (s.score * (s.assessment.weight/100))}" />
-                                                            </c:if>
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                </c:forEach>
+                                        </c:if>
+                                    </c:forEach>
 
 
-                                                <!-- Gán giá trị cho finalExamResitTotal từ finalExamResitTotalTemp -->
-                                                <c:set var="finalExamResitTotal" value="${finalExamResitTotalTemp}" />
-                                                <c:set var="theoryExamResitTotal" value="${theoryExamResitTotalTemp}" />
-                                                <c:set var="practialExamResitTotal" value="${practialExamResitTotalTemp}" />
 
-                                                <!-- Tính tổng cho 'Final exam resit' và 'Final exam' ngoài vòng lặp -->
-                                                <c:if test="${finalExamResitTotal != 0}">
-                                                    <c:set var="totalscore" value="${totalscore + finalExamResitTotal + practialExamTotal - finalExamTotal}" />
-                                                </c:if>
-                                                
-                                                <c:if test="${finalExamResitTotal == 0}">
-                                                    <c:set var="totalscore" value="${totalscore + practialExamTotal}" />
-                                                </c:if>
+                                    <c:set var="finalExamResitTotal" value="${finalExamResitTotalTemp}" />
+                                    <c:set var="theoryExamResitTotal" value="${theoryExamResitTotalTemp}" />
+                                    <c:set var="practialExamResitTotal" value="${practialExamResitTotalTemp}" />
+                                    <c:set var="listenExamResitTotal" value="${listenExamResitTotalTemp}" />
+                                    <c:set var="gvrExamResitTotal" value="${gvrExamResitTotalTemp}" />
 
-                                                <c:if test="${theoryExamResitTotal != 0 && practialExamResitTotal != 0}">
-                                                    <c:set var="totalscore" value="${totalscore + practialExamResitTotal + theoryExamResitTotal - theoryExamTotal - practialExamTotal}" />
-                                                </c:if>
+                                    <c:if test="${finalExamResitTotal != 0 && finalStatus == true && theoryStatus == false}">
+                                        <c:set var="totalscore" value="${totalscore + finalExamResitTotal - finalExamTotal}" />
+                                    </c:if>
 
-                                                <span id="totalscore">${totalscore}</span>
-                                            </td>
-                                        </tr>
+                                    <c:if test="${finalExamResitTotal == 0 && finalStatus == true && theoryStatus == false}">
+                                        <c:set var="totalscore" value="${totalscore}" /> 
+                                        <!--+ practialExamTotal-->
+                                    </c:if>
 
-                                        <tr>
-                                            <td>
-                                                STATUS
-                                            </td>
-                                            <td>
-                                                <c:set var="totalEachWeight" value="0" />
-                                                <c:set var="nullScoreCount" value="0" />
-                                                <c:set var="sameWeightAndZeroScore" value="true" />
-                                                <c:set var="totalEachScore" value="0" />
-                                                <c:set var="practicalExamStatus" value="true" />
-                                                <c:set var="weightMatchCount" value="0" />
-                                                <c:set var="theoryExamStatus" value="true" />
-                                                <c:set var="finalExamStatus" value="true" />
+                                    <c:if test="${theoryExamResitTotal != 0 && practialExamResitTotal != 0 && theoryStatus == true && finalStatus == false}">
+                                        <c:set var="totalscore" value="${totalscore + practialExamResitTotal + theoryExamResitTotal - theoryExamTotal - practialExamTotal}" />
+                                    </c:if>
 
-                                                <c:forEach items="${requestScope.scores}" var="s" varStatus="loop">
-                                                    <c:if test="${sameWeightAndZeroScore == true}">
-                                                        <c:if test="${s.assessment.grade.name != 'Final exam' && s.assessment.grade.name != 'Final exam Resit' && s.assessment.grade.name != 'Practical exam'}">
-                                                            <c:if test="${s.assessment.weight == requestScope.scores[loop.index + 1].assessment.weight 
-                                                                          && s.assessment.grade.name.replaceAll('[0-9]', '') == requestScope.scores[loop.index + 1].assessment.grade.name.replaceAll('[0-9]', '')}">
-                                                                <c:set var="weightMatchCount" value="${weightMatchCount + 1}" />
+                                    <c:if test="${listenExamResitTotal != 0 && gvrExamResitTotal != 0 && listenStatus == true && gvrStatus == true  && finalStatus == false && theoryStatus == false && practicalStatus == false}">
+                                        <c:set var="totalscore" value="${totalscore + listenExamResitTotal + gvrExamResitTotal - gvrExamTotal - listenExamTotal}" />
+                                    </c:if>
 
-                                                                <c:set var="totalEachScore" value="${totalEachScore + s.score}" />
-                                                            </c:if>
-                                                            <c:if test="${weightMatchCount >= 2 && s.assessment.weight != requestScope.scores[loop.index + 1].assessment.weight
-                                                                          || s.assessment.grade.name.replaceAll('[0-9]', '') == requestScope.scores[loop.index + 1].assessment.grade.name.replaceAll('[0-9]', '')}">
-                                                                <c:if test="${totalEachScore == 0}">
-                                                                    <c:set var="sameWeightAndZeroScore" value="false" />
-                                                                    <c:set var="totalEachScore" value="0" />
-                                                                </c:if>
-                                                            </c:if>
+                                    <c:if test="${listenExamResitTotal == 0 && gvrExamResitTotal == 0 && listenStatus == true && gvrStatus == true  && finalStatus == false && theoryStatus == false && practicalStatus == false}">
+                                        <c:set var="totalscore" value="${totalscore}" />
+                                    </c:if>
+
+
+
+                                    <span id="totalscore">${totalscore}</span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    STATUS
+                                </td>
+                                <td>
+                                    <c:set var="totalEachWeight" value="0" />
+
+                                    <c:set var="sameWeightAndZeroScore" value="true" />
+                                    <c:set var="totalEachScore" value="0" />
+                                    <c:set var="practicalExamStatus" value="true" />
+                                    <c:set var="weightMatchCount" value="0" />
+                                    <c:set var="theoryExamStatus" value="true" />
+                                    <c:set var="finalExamStatus" value="true" />
+
+                                    <c:forEach items="${requestScope.scores}" var="s" varStatus="loop">
+                                        <c:if test="${s.enrollment.student.id eq sessionScope.account.student.id}">
+                                            <c:if test="${sameWeightAndZeroScore == true}">
+                                                <c:if test="${s.assessment.grade.name != 'Final exam' && s.assessment.grade.name != 'Final exam Resit' && s.assessment.grade.name != 'Practical exam'}">
+                                                    <c:if test="${s.assessment.weight == requestScope.scores[loop.index + 1].assessment.weight 
+                                                                  && s.assessment.grade.name.replaceAll('[0-9]', '') == requestScope.scores[loop.index + 1].assessment.grade.name.replaceAll('[0-9]', '')}">
+                                                        <c:set var="weightMatchCount" value="${weightMatchCount + 1}" />
+
+                                                        <c:set var="totalEachScore" value="${totalEachScore + s.score}" />
+                                                    </c:if>
+                                                    <c:if test="${weightMatchCount >= 2 && s.assessment.weight != requestScope.scores[loop.index + 1].assessment.weight
+                                                                  || s.assessment.grade.name.replaceAll('[0-9]', '') == requestScope.scores[loop.index + 1].assessment.grade.name.replaceAll('[0-9]', '')}">
+                                                        <c:if test="${totalEachScore == 0}">
+                                                            <c:set var="sameWeightAndZeroScore" value="false" />
+                                                            <c:set var="totalEachScore" value="0" />
                                                         </c:if>
                                                     </c:if>
-                                                </c:forEach>
+                                                </c:if>
+                                            </c:if>
+                                        </c:if>
+                                    </c:forEach>
 
-                                                <c:forEach items="${requestScope.scores}" var="s" varStatus="loop">
-                                                    <c:choose>
-                                                        <c:when test="${s.assessment.grade.name == 'Final exam Resit' && s.score == null}">
-                                                            <c:forEach items="${requestScope.scores}" var="s" varStatus="loop">
-                                                                <c:choose>
-                                                                    <c:when test="${s.assessment.grade.name != 'Final exam' }">
-                                                                        <c:set var="finalExamStatus" value="true" />
-                                                                    </c:when>
-                                                                    <c:when test="${s.assessment.grade.name == 'Final exam'}">
-                                                                        <c:if test="${s.score < 4}">
-                                                                            <c:set var="finalExamStatus" value="false" />
-                                                                        </c:if>
-                                                                        <c:if test="${s.score >= 4}">
-                                                                            <c:set var="finalExamStatus" value="true" />
-                                                                        </c:if>
-                                                                    </c:when>
-                                                                </c:choose>
-                                                            </c:forEach>
-                                                        </c:when>
-
-                                                        <c:when test="${s.assessment.grade.name == 'Final exam Resit' && s.score > 0}">
-                                                            <c:if test="${s.score < 4}">
-                                                                <c:set var="finalExamStatus" value="false" />
-                                                            </c:if>
-                                                            <c:if test="${s.score >= 4}">
+                                    <c:forEach items="${requestScope.scores}" var="s" varStatus="loop">
+                                        <c:if test="${s.enrollment.student.id eq sessionScope.account.student.id}">
+                                            <c:choose>
+                                                <c:when test="${s.assessment.grade.name == 'Final exam Resit' && s.score == null}">
+                                                    <c:forEach items="${requestScope.scores}" var="s" varStatus="loop">
+                                                        <c:choose>
+                                                            <c:when test="${s.assessment.grade.name != 'Final exam' }">
                                                                 <c:set var="finalExamStatus" value="true" />
-                                                            </c:if>
-                                                        </c:when>
-
-                                                        <c:when test="${s.assessment.grade.name == 'Final exam' && s.score < 4}">
-                                                            <c:forEach items="${requestScope.scores}" var="s" varStatus="loop">
-                                                                <c:if test="${s.assessment.grade.name == 'Final exam Resit' && s.score == 0}">
+                                                            </c:when>
+                                                            <c:when test="${s.assessment.grade.name == 'Final exam'}">
+                                                                <c:if test="${s.score < 4}">
                                                                     <c:set var="finalExamStatus" value="false" />
                                                                 </c:if>
-                                                            </c:forEach>
-                                                        </c:when>
-                                                        <c:otherwise>
+                                                                <c:if test="${s.score >= 4}">
+                                                                    <c:set var="finalExamStatus" value="true" />
+                                                                </c:if>
+                                                            </c:when>
+                                                        </c:choose>
+                                                    </c:forEach>
+                                                </c:when>
 
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                </c:forEach>
+                                                <c:when test="${s.assessment.grade.name == 'Final exam Resit' && s.score > 0}">
+                                                    <c:if test="${s.score < 4}">
+                                                        <c:set var="finalExamStatus" value="false" />
+                                                    </c:if>
+                                                    <c:if test="${s.score >= 4}">
+                                                        <c:set var="finalExamStatus" value="true" />
+                                                    </c:if>
+                                                </c:when>
 
-                                                <c:forEach items="${requestScope.scores}" var="s" varStatus="loop">
-                                                    <c:choose>
-                                                        <c:when test="${s.assessment.grade.name == 'Practical exam Resit' && s.score == null}">
-                                                            <c:forEach items="${requestScope.scores}" var="s" varStatus="loop">
-                                                                <c:choose>
-                                                                    <c:when test="${s.assessment.grade.name != 'Practical exam' }">
-                                                                        <!-- Nếu mục không phải "Practical exam," tiếp tục vòng lặp -->
-                                                                        <c:set var="practicalExamStatus" value="true" />
-                                                                    </c:when>
-                                                                    <c:when test="${s.assessment.grade.name == 'Practical exam'}">
-                                                                        <c:if test="${s.score < 4}">
-                                                                            <c:set var="practicalExamStatus" value="false" />
-                                                                        </c:if>
-                                                                        <c:if test="${s.score >= 4}">
-                                                                            <c:set var="practicalExamStatus" value="true" />
-                                                                        </c:if>
-                                                                    </c:when>
-                                                                </c:choose>
-                                                            </c:forEach>
-                                                        </c:when>
+                                                <c:when test="${s.assessment.grade.name == 'Final exam' && s.score < 4}">
+                                                    <c:forEach items="${requestScope.scores}" var="s" varStatus="loop">
+                                                        <c:if test="${s.assessment.grade.name == 'Final exam Resit' && s.score == 0}">
+                                                            <c:set var="finalExamStatus" value="false" />
+                                                        </c:if>
+                                                    </c:forEach>
+                                                </c:when>
+                                                <c:otherwise>
 
-                                                        <c:when test="${s.assessment.grade.name == 'Practical exam Resit' && s.score > 0}">
-                                                            <c:if test="${s.score < 4}">
-                                                                <c:set var="practicalExamStatus" value="false" />
-                                                            </c:if>
-                                                            <c:if test="${s.score >= 4}">
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:if>
+                                    </c:forEach>
+
+                                    <c:forEach items="${requestScope.scores}" var="s" varStatus="loop">
+                                        <c:if test="${s.enrollment.student.id eq sessionScope.account.student.id}">
+                                            <c:choose>
+                                                <c:when test="${s.assessment.grade.name == 'Practical exam Resit' && s.score == null}">
+                                                    <c:forEach items="${requestScope.scores}" var="s" varStatus="loop">
+                                                        <c:choose>
+                                                            <c:when test="${s.assessment.grade.name != 'Practical exam' }">
+                                                                <!-- Nếu mục không phải "Practical exam," tiếp tục vòng lặp -->
                                                                 <c:set var="practicalExamStatus" value="true" />
-                                                            </c:if>
-                                                        </c:when>
-
-                                                        <c:when test="${s.assessment.grade.name == 'Practical exam' && s.score < 4}">
-                                                            <c:forEach items="${requestScope.scores}" var="s" varStatus="loop">
-                                                                <c:if test="${s.assessment.grade.name == 'Practical exam Resit' && s.score == 0}">
+                                                            </c:when>
+                                                            <c:when test="${s.assessment.grade.name == 'Practical exam'}">
+                                                                <c:if test="${s.score < 4}">
                                                                     <c:set var="practicalExamStatus" value="false" />
                                                                 </c:if>
-                                                            </c:forEach>
-                                                        </c:when>
-                                                        <c:otherwise>
+                                                                <c:if test="${s.score >= 4}">
+                                                                    <c:set var="practicalExamStatus" value="true" />
+                                                                </c:if>
+                                                            </c:when>
+                                                        </c:choose>
+                                                    </c:forEach>
+                                                </c:when>
 
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                </c:forEach>
+                                                <c:when test="${s.assessment.grade.name == 'Practical exam Resit' && s.score > 0}">
+                                                    <c:if test="${s.score < 4}">
+                                                        <c:set var="practicalExamStatus" value="false" />
+                                                    </c:if>
+                                                    <c:if test="${s.score >= 4}">
+                                                        <c:set var="practicalExamStatus" value="true" />
+                                                    </c:if>
+                                                </c:when>
+
+                                                <c:when test="${s.assessment.grade.name == 'Practical exam' && s.score < 4}">
+                                                    <c:forEach items="${requestScope.scores}" var="s" varStatus="loop">
+                                                        <c:if test="${s.assessment.grade.name == 'Practical exam Resit' && s.score == 0}">
+                                                            <c:set var="practicalExamStatus" value="false" />
+                                                        </c:if>
+                                                    </c:forEach>
+                                                </c:when>
+                                                <c:otherwise>
+
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:if>
+                                    </c:forEach>
 
 
-                                                <c:forEach items="${requestScope.scores}" var="s" varStatus="loop">
-                                                    <c:choose>
-                                                        <c:when test="${s.assessment.grade.name == 'Theory exam resit' && s.score == null}">
-                                                            <c:forEach items="${requestScope.scores}" var="s" varStatus="loop">
-                                                                <c:choose>
-                                                                    <c:when test="${s.assessment.grade.name != 'Theory exam' }">
+                                    <c:forEach items="${requestScope.scores}" var="s" varStatus="loop">
+                                        <c:if test="${s.enrollment.student.id eq sessionScope.account.student.id}">
+                                            <c:choose>
+                                                <c:when test="${s.assessment.grade.name == 'Theory exam resit' && s.score == null}">
+                                                    <c:forEach items="${requestScope.scores}" var="s" varStatus="loop">
+                                                        <c:choose>
+                                                            <c:when test="${s.assessment.grade.name != 'Theory exam' }">
 
-                                                                        <c:set var="theoryExamStatus" value="true" />
-                                                                    </c:when>
-                                                                    <c:when test="${s.assessment.grade.name == 'Theory exam'}">
-                                                                        <c:if test="${s.score < 4}">
-                                                                            <c:set var="theoryExamStatus" value="false" />
-                                                                        </c:if>
-                                                                        <c:if test="${s.score >= 4}">
-                                                                            <c:set var="theoryExamStatus" value="true" />
-                                                                        </c:if>
-                                                                    </c:when>
-                                                                </c:choose>
-                                                            </c:forEach>
-                                                        </c:when>
-
-                                                        <c:when test="${s.assessment.grade.name == 'Theory exam resit' && s.score > 0}">
-                                                            <c:if test="${s.score < 4}">
-                                                                <c:set var="theoryExamStatus" value="false" />
-                                                            </c:if>
-                                                            <c:if test="${s.score >= 4}">
                                                                 <c:set var="theoryExamStatus" value="true" />
-                                                            </c:if>
-                                                        </c:when>
-
-                                                        <c:when test="${s.assessment.grade.name == 'Theory exam' && s.score < 4}">
-                                                            <c:forEach items="${requestScope.scores}" var="s" varStatus="loop">
-                                                                <c:if test="${s.assessment.grade.name == 'Theory exam resit' && s.score == 0}">
+                                                            </c:when>
+                                                            <c:when test="${s.assessment.grade.name == 'Theory exam'}">
+                                                                <c:if test="${s.score < 4}">
                                                                     <c:set var="theoryExamStatus" value="false" />
                                                                 </c:if>
-                                                            </c:forEach>
-                                                        </c:when>
-                                                        <c:otherwise>
+                                                                <c:if test="${s.score >= 4}">
+                                                                    <c:set var="theoryExamStatus" value="true" />
+                                                                </c:if>
+                                                            </c:when>
+                                                        </c:choose>
+                                                    </c:forEach>
+                                                </c:when>
 
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                </c:forEach>
-
-                                                <c:forEach items="${requestScope.scores}" var="s" varStatus="loop">
-                                                    <c:if test="${s.score == null}">
-                                                        <c:set var="nullScoreCount" value="${nullScoreCount + 1}" />
+                                                <c:when test="${s.assessment.grade.name == 'Theory exam resit' && s.score > 0}">
+                                                    <c:if test="${s.score < 4}">
+                                                        <c:set var="theoryExamStatus" value="false" />
                                                     </c:if>
-                                                </c:forEach>
+                                                    <c:if test="${s.score >= 4}">
+                                                        <c:set var="theoryExamStatus" value="true" />
+                                                    </c:if>
+                                                </c:when>
 
-                                                <c:if test="${nullScoreCount > 3}">
-                                                    <c:set var="status" value="STUDYING" />
-                                                </c:if>
-                                                <c:if test="${totalscore >= 5.0 && sameWeightAndZeroScore == true && finalExamStatus == true && practicalExamStatus == true && theoryExamStatus == true}">
-                                                    <c:set var="status" value="PASSED" />
-                                                </c:if>
-                                                <c:if test="${totalscore < 5.0 || sameWeightAndZeroScore == false || finalExamStatus == false || practicalExamStatus == false || theoryExamStatus == false}">
-                                                    <c:set var="status" value="NOT PASSED" />
-                                                </c:if>
+                                                <c:when test="${s.assessment.grade.name == 'Theory exam' && s.score < 4}">
+                                                    <c:forEach items="${requestScope.scores}" var="s" varStatus="loop">
+                                                        <c:if test="${s.assessment.grade.name == 'Theory exam resit' && s.score == null}">
+                                                            <c:set var="theoryExamStatus" value="false" />
+                                                        </c:if>
+                                                    </c:forEach>
+                                                </c:when>
+                                                <c:otherwise>
 
-                                                <span id="status" style="color:
-                                                      <c:choose>
-                                                          <c:when test="${status == 'STUDYING'}">blue</c:when>
-                                                          <c:when test="${status == 'PASSED'}">green</c:when>
-                                                          <c:when test="${status == 'NOT PASSED'}">red</c:when>
-                                                          <c:otherwise>black</c:otherwise>
-                                                      </c:choose>;
-                                                      ">
-                                                    ${status}
-                                                </span>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:if>
+                                    </c:forEach>
 
-                                            </td>
-                                        </tr>
-                                    </tfoot>
+                                    <c:forEach items="${requestScope.scores}" var="s" varStatus="loop">
+                                        <c:if test="${s.enrollment.student.id eq sessionScope.account.student.id}">
+                                            <c:if test="${s.score == null}">
+                                                <c:set var="nullScoreCount" value="${nullScoreCount + 1}" />
+                                            </c:if>
+                                        </c:if>
+                                    </c:forEach>
+
+                                    <c:set var="checkNullScore" value="0" />
+                                    <c:forEach items="${requestScope.scores}" var="s" varStatus="loop">
+                                        <c:if test="${s.enrollment.student.id eq sessionScope.account.student.id}">
+                                            <c:if test="${s.score == null}">
+                                                <c:set var="checkNullScore" value="${checkNullScore + 1}" />
+                                            </c:if>
+                                        </c:if>
+                                    </c:forEach>
+
+
+                                    <c:if test="${checkNullScore > 3}">
+                                        <c:set var="status" value="STUDYING" />
+                                    </c:if>
+                                    <c:if test="${totalscore >= 5.0 && sameWeightAndZeroScore == true && finalExamStatus == true && practicalExamStatus == true && theoryExamStatus == true && checkNullScore < 3}">
+                                        <c:set var="status" value="PASSED" />
+                                    </c:if>
+                                    <c:if test="${(totalscore < 5.0 || sameWeightAndZeroScore == false || finalExamStatus == false || practicalExamStatus == false || theoryExamStatus == false) && checkNullScore < 3}">
+                                        <c:set var="status" value="NOT PASSED" />
+                                    </c:if>
+
+                                    <span id="status" style="color:
+                                          <c:choose>
+                                              <c:when test="${status == 'STUDYING'}">blue</c:when>
+                                              <c:when test="${status == 'PASSED'}">green</c:when>
+                                              <c:when test="${status == 'NOT PASSED'}">red</c:when>
+                                              <c:otherwise>black</c:otherwise>
+                                          </c:choose>;
+                                          ">
+                                        ${status}
+                                    </span>
+
+                                </td>
+                            </tr>
+                        </tfoot>
 
 
 
-                                </table>
-                            </td>
-                        </tr>
                     </table>
+
                 </div>
 
                 <div class="footer">
@@ -594,8 +694,6 @@
             window.onload = roundToOneDecimal;
         </script>
 
-
-
         <script>
             // Lấy giá trị totalscore từ thẻ <span>
             var totalscoreElement = document.getElementById('totalscore');
@@ -609,7 +707,12 @@
         </script>
 
 
-
+        <script>
+            // Kiểm tra nếu requestScope.scores.score == null thì ẩn thẻ div
+            if (<%= request.getAttribute("scores") %>.score == null) {
+                document.getElementById("courseTable").style.display = "none";
+            }
+        </script>
 
 
 

@@ -27,6 +27,7 @@ import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.time.LocalDate;
 import java.util.ArrayList;
 //import org.apache.jasper.compiler.Node;
 
@@ -61,9 +62,10 @@ public class MarkReport extends BasedRequiredAuthenticationController {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response, Account LoggedUser) throws ServletException, IOException {
 
+
         String termId = request.getParameter("termName");
         request.setAttribute("term", termId);
-        
+
         CampusDBContext cpb = new CampusDBContext();
         ArrayList<Campus> campus = cpb.list();
 
@@ -79,9 +81,10 @@ public class MarkReport extends BasedRequiredAuthenticationController {
 
         String sid = request.getParameter("termName");
         request.setAttribute("id", sid);
-        
+
         EnrollMentDBContext edb = new EnrollMentDBContext();
         ArrayList<Enrollment> enrolls = edb.listDistinctCoursesBySemester(sid);
+
 
         String cid = request.getParameter("courseId");
         request.setAttribute("cid", cid);
