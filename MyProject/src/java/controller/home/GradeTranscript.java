@@ -170,6 +170,9 @@ public class GradeTranscript extends BasedRequiredAuthenticationController {
             }
         }
 
+       
+
+
         request.setAttribute(
                 "filteredScores", filteredScores);
         request.setAttribute(

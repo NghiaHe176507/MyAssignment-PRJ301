@@ -6,6 +6,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -438,7 +439,6 @@
                                 </td>
                                 <td>
                                     <c:set var="totalEachWeight" value="0" />
-
                                     <c:set var="sameWeightAndZeroScore" value="true" />
                                     <c:set var="totalEachScore" value="0" />
                                     <c:set var="practicalExamStatus" value="true" />

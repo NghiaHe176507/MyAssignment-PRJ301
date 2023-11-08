@@ -14,6 +14,17 @@ public class Score extends BaseEntity {
     private Assessment assessment;
     private Float score;
     private Enrollment enrollment;
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+    
+    
 
     public int getId() {
         return id;

@@ -67,56 +67,7 @@
                             href="https://ezse.net/other/grade/gpa.html?data=U1dQMzkx2E5hTtgKSVRFMzAyY9hOYU7YClNXUjMwMthOYU7YClNXVDMwMdhOYU7YCkZFUjIwMthOYU7YCkVOVzQ5MmPYTmFO2ApJU0MzMDHYTmFO2ApQUk0zOTLYTmFO2ApTV0QzOTLYTmFO2ApTRE4zMDFt2E5hTtgKRVhFMTAx2E5hTtgKRVhFMjAx2E5hTtgKUE1HMjAyY9hOYU7YCldEVTIwM2PYTmFO2ApNTE4xMTHYTmFO2ApTRS0wMDA02E5hTtgKTUxOMTIy2E5hTtgKU0VQNDkw2E5hTtgKSENNMjAy2E5hTtgKTUxOMTMx2E5hTtgKVk5SMjAy2E5hTtgKVE1JMTAx2DPYNy40ClNTTDEwMWPYM9g1CkNTSTEwNNgz2DYuNgpQUkYxOTLYM9g2LjEKTUFFMTAx2DPYNi45CkNFQTIwMdgz2DcuOApQUk8xOTLYM9g3LjIKTUFEMTAx2DPYNy42Ck9TRzIwMtgz2DcuOApOV0MyMDNj2DPYOS4yClNTRzEwNNgz2DcuOQpKUEQxMTPYM9g3LjkKQ1NEMjAx2DPYNS40CkRCSTIwMtgz2DcuNwpNQVMyOTHYM9gKSlBEMTIz2DPYCklPVDEwMtgz2DguMwpQUkozMDHYM9gKU1dFMjAxY9hOYU7Y"
                             target="_blank" title="Click to edit grade and recalculate GPA" class="label label-default">GPA:
                             7.253</a><br><br>
-                        <h4><a href="https://ezse.net/other/grade/gpa.html?data=VE1JMTAx2DPYNy40" target="_blank"
-                               class="label label-primary" title="TMI101: 7.4 x 3
-                               Average: 7.4
-
-                               Click to edit grade and recalculate GPA">Spring2022: 7.4</a> <a
-                               href="https://ezse.net/other/grade/gpa.html?data=U1NMMTAxY9gz2DUKQ1NJMTA02DPYNi42ClBSRjE5Mtgz2DYuMQpNQUUxMDHYM9g2LjkKQ0VBMjAx2DPYNy44"
-                               target="_blank" class="label label-success" title="SSL101c: 5 x 3
-                               CSI104: 6.6 x 3
-                               PRF192: 6.1 x 3
-                               MAE101: 6.9 x 3
-                               CEA201: 7.8 x 3
-                               Average: 6.48
-
-                               Click to edit grade and recalculate GPA">Fall2022: 6.48</a> <a
-                               href="https://ezse.net/other/grade/gpa.html?data=UFJPMTky2DPYNy4yCk1BRDEwMdgz2DcuNgpPU0cyMDLYM9g3LjgKTldDMjAzY9gz2DkuMgpTU0cxMDTYM9g3Ljk="
-                               target="_blank" class="label label-primary" title="PRO192: 7.2 x 3
-                               MAD101: 7.6 x 3
-                               OSG202: 7.8 x 3
-                               NWC203c: 9.2 x 3
-                               SSG104: 7.9 x 3
-                               Average: 7.94
-
-                               Click to edit grade and recalculate GPA">Spring2023: 7.94</a> <a
-                               href="https://ezse.net/other/grade/gpa.html?data=SlBEMTEz2DPYNy45CkNTRDIwMdgz2DUuNApEQkkyMDLYM9g3Ljc="
-                               target="_blank" class="label label-success" title="JPD113: 7.9 x 3
-                               CSD201: 5.4 x 3
-                               DBI202: 7.7 x 3
-                               Average: 7
-
-                               Click to edit grade and recalculate GPA">Summer2023: 7</a> <a
-                               href="https://ezse.net/other/grade/gpa.html?data=TUFTMjkx2DPYCkpQRDEyM9gz2ApJT1QxMDLYM9g4LjMKUFJKMzAx2DPYClNXRTIwMWPYTmFO2A=="
-                               target="_blank" class="label label-primary" title="MAS291:  x 3
-                               JPD123:  x 3
-                               IOT102: 8.3 x 3
-                               PRJ301:  x 3
-                               SWE201c:  x NaN
-                               Average: 8.3
-
-                               Click to edit grade and recalculate GPA">Fall2023: 8.3</a> </h4>
-                    </span>
-                    <div>
-                        <a class="btn" disabled="" style="margin-top: 5px;">Exclude: </a>
-                        <input value="GDQP,ENT,VOV,TRS,ÐSA,LAB,OJS,OJT,SYB301" id="excludedSubjectCodes" type="text"
-                               onkeydown="return event.key != 'Enter';" class="form-control"
-                               style="width: calc(100% - 300px);display: inline;"
-                               placeholder="Enter the SUBJECT CODEs to EXCLUDE from GPA calculation, separated by commas (,)"
-                               fdprocessedid="iuje6y">
-                        <a class="btn btn-warning" id="btnExclude" style="margin-top: 5px;">OK</a>
-                        <a class="btn btn-primary" id="btnReset" style="margin-top: 5px;">Reset</a>
-                    </div>
+                        
                 </h2>
 
                 <table class="table table-hover">
@@ -132,6 +83,7 @@
                         </tr>
                     </thead>
                     <tbody>
+
                         <c:set var="rowNo" value="1" />
                         <c:forEach items="${requestScope.enroll}" var="e">
                             <c:if test="${e.student.id eq sessionScope.account.student.id}">
@@ -147,11 +99,27 @@
                                             <c:if test="${loop.index == 0 || f.enrollment.id != requestScope.filteredScores[loop.index - 1].enrollment.id}">
                                                 <c:set var="courseTotal" value="0" />
                                             </c:if>
-                                            <c:set var="courseTotal" value="${courseTotal + f.total}" />
+
+                                            <!-- Check if f.grade.name is 'Final exam' and f.score.score is null -->
+                                            <c:if test="${(f.grade.name == 'Final exam' && f.score.score == null) 
+                                                          || (f.grade.name == 'FE: GVR' && f.score.score == null)
+                                                          || (f.grade.name == 'FE: Listening' && f.score.score == null)
+                                                          || (f.grade.name == 'Theory exam' && f.score.score == null)
+                                                  }">
+                                                <c:set var="courseTotal" value="" />
+                                            </c:if>
+                                            <!-- If it's not 'Final exam' with null score, update courseTotal -->
+                                            <c:if test="${f.grade.name != 'Final exam' || f.score.score != null}">
+                                                <c:set var="courseTotal" value="${courseTotal + f.total}" />
+                                            </c:if>
+
                                             <c:if test="${loop.index == requestScope.filteredScores.size() - 1 || f.enrollment.id != requestScope.filteredScores[loop.index + 1].enrollment.id}">
                                                 <td>
-                                                    <span class="label label-primary">${courseTotal}</span>
+                                                    <c:if test="${courseTotal ne ''}">
+                                                        <span class="label label-primary" id="courseTotal">${courseTotal}</span>
+                                                    </c:if>
                                                 </td>
+
                                             </c:if>
                                         </c:if>
                                         <c:if test="${loop.index != 0 && loop.index != requestScope.filteredScores.size() - 1 && f.enrollment.id != requestScope.filteredScores[loop.index - 1].enrollment.id && f.enrollment.id != requestScope.filteredScores[loop.index + 1].enrollment.id}">
@@ -159,14 +127,64 @@
                                         </c:if>
                                     </c:forEach>
 
-
-
-
-
-
                                     <td>
-                                        <span class="label label-success">Passed</span>
+                                        <c:forEach items="${requestScope.filteredScores}" var="f" varStatus="loop">
+                                            <c:if test="${f.enrollment.id eq e.id && f.course.id eq e.course.id}">
+                                                <c:set var="checkNullScore" value="0" />
+                                                <c:forEach items="${requestScope.filteredScores}" var="f" varStatus="loop">
+                                                    <c:if test="${f.enrollment.id eq e.id && f.course.id eq e.course.id}">
+                                                        <c:if test="${f.score.score == null}">
+                                                            <c:set var="checkNullScore" value="${checkNullScore + 1}" />
+                                                        </c:if>
+                                                    </c:if>
+                                                </c:forEach>
+
+                                                <c:set var="sameWeightAndZeroScore" value="true" />
+                                                <c:set var="totalEachScore" value="0" />
+                                                <c:set var="weightMatchCount" value="0" />
+
+                                                <c:set var="practicalExamStatus" value="true" />
+                                                <c:set var="theoryExamStatus" value="true" />
+                                                <c:set var="finalExamStatus" value="true" />
+
+
+                                                <c:choose>
+                                                    <c:when test="${f.grade.name == 'Final exam'}">
+                                                        <c:if test="${f.score.score < 4}">
+                                                            <c:set var="finalExamStatus" value="false" />
+                                                        </c:if>
+                                                    </c:when>
+                                                    <c:when test="${f.grade.name == 'Final exam Resit' }">
+                                                        <c:if test="${f.score.score < 4}">
+                                                            <c:set var="finalExamStatus" value="false" />
+                                                        </c:if>
+                                                    </c:when>
+                                                    <c:when test="${(f.grade.name == 'Theory exam' || f.grade.name == 'Practical exam') || (f.grade.name == 'Theory exam resit' || f.grade.name == 'Practical exam Resit')}">
+                                                        <c:if test="${f.score.score < 4}">
+                                                            <c:set var="theoryExamStatus" value="false" />
+                                                        </c:if>
+                                                    </c:when>
+                                                </c:choose>
+                                            </c:if>
+                                        </c:forEach>
+
+                                        <c:choose>
+                                            <c:when test="${courseTotal >= 5.0 && checkNullScore < 3 && finalExamStatus == true && theoryExamStatus == true}">
+                                                <span class="label label-success">Passed</span>
+                                            </c:when>
+                                            <c:when test="${((courseTotal < 5.0 && courseTotal ne '' )|| theoryExamStatus == false && finalExamStatus == false) && checkNullScore < 3}">
+                                                <span class="label label-danger">Not Passed</span>
+                                            </c:when>
+                                            <c:when test="${checkNullScore >= 3}">
+                                                <span class="label label-info">Studying</span>
+                                            </c:when>
+                                             
+                                        </c:choose>
+
+
+
                                     </td>
+
                                 </tr>
                                 <c:set var="rowNo" value="${rowNo + 1}" />
                             </c:if>
@@ -175,12 +193,13 @@
                 </table>
 
                 <div>
-                    <c:forEach items="${requestScope.filteredScores}" var="f" >
-                        <p>${f.enrollment.id} : ${f.course.id} : ${f.total}</p>
-                        <p></p>
-
+                    <c:forEach items="${requestScope.filteredScores}" var="f" varStatus="loop">
+                        <p>${f.course.id} : ${f.grade.name} : ${f.total}</p>
                     </c:forEach>
                 </div>
+
+
+
 
                 <div class="footer">
                     <div id="ctl00_divSupport" style="text-align: center">
@@ -208,6 +227,23 @@
         </form>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.min.js"></script>
+        <script>
+                                   function roundNumberTo1DecimalPlace(number) {
+                                       return Math.round(number * 10) / 10;
+                                   }
+
+                                   // Đặt sự kiện khi trang đã tải xong
+                                   window.addEventListener('load', function () {
+                                       // Lặp qua các thẻ span và làm tròn số
+                                       var spans = document.querySelectorAll('span.label.label-primary');
+                                       spans.forEach(function (span, index) {
+                                           var courseTotal = parseFloat(span.textContent);
+                                           var roundedTotal = roundNumberTo1DecimalPlace(courseTotal);
+                                           span.textContent = roundedTotal.toFixed(1); // Hiển thị số làm tròn với 1 chữ số sau dấu phẩy
+                                       });
+                                   });
+        </script>
+
     </body>
 
 </html>

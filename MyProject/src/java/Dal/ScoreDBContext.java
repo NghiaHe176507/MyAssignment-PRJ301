@@ -182,13 +182,13 @@ public class ScoreDBContext extends DBContext<Score> {
     public ArrayList<TotalEachScore> listtotal() {
         ArrayList<TotalEachScore> totaleachscores = new ArrayList<>();
         try {
-            String sql = "SELECT e.[EnrollmentId], a.[AssessmentID] ,s.[ScoreId],s.Score, g.GradeName ,e.[CourseId],\n"
+            String sql = "SELECT e.[EnrollmentId], a.[AssessmentID] ,s.[ScoreId],s.Score, a.[Weight], g.GradeName ,e.[CourseId],\n"
                     + "       SUM(s.[Score] * a.[Weight] / 100) AS [Total]\n"
                     + "  FROM [Score] s\n"
                     + "       INNER JOIN [Enrollment] e ON s.[EnrollmentId] = e.[EnrollmentId]\n"
                     + "       INNER JOIN [Assessment] a ON s.[AssessmentId] = a.[AssessmentId]\n"
                     + "       INNER JOIN [Grade] g ON a.[GradeId] = g.[GradeId]\n"
-                    + "GROUP BY e.[CourseId], e.[EnrollmentId],a.[AssessmentID],s.[ScoreId],g.GradeName,s.Score\n"
+                    + "GROUP BY e.[CourseId], e.[EnrollmentId],a.[AssessmentID],s.[ScoreId],g.GradeName,s.Score, a.[Weight]\n"
                     + "ORDER BY e.[EnrollmentId]";
             PreparedStatement stm = connection.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
@@ -200,6 +200,7 @@ public class ScoreDBContext extends DBContext<Score> {
                 
                 Assessment a = new Assessment();
                 a.setId(rs.getInt("AssessmentID"));
+                a.setWeight(rs.getFloat("Weight"));
                 t.setAssessment(a);
                 
                 Score s = new Score();
